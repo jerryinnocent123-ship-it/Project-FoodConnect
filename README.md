@@ -15,6 +15,7 @@ Logo + navbar
 Lis restoran (cards)
 Rechèch restoran
 Bouton “Commander”
+
 🍽️ 2. Restaurants List
 
 👉 Tout restoran yo
@@ -24,6 +25,7 @@ Li dwe genyen:
 Liste restoran
 Filtre (prix, localisation)
 Search bar
+
 📄 3. Restaurant Details
 
 👉 Lè user klike sou yon restoran
