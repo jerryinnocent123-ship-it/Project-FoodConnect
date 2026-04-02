@@ -1,3 +1,10 @@
+Branch:
+Client-cart
+  admin-panel
+  auth
+* main
+  restaurant-dashboard
+
 KONBYEN PAJ OU BEZWEN?
 
 Pou yon MVP (Minimum Viable Product) ki solid:
