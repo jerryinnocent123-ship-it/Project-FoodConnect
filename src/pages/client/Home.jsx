@@ -1,14 +1,9 @@
+import React from 'react'
 
-export default function Home() {
-    return (
-        <>
- // Li dwe genyen:
-
-        // Logo + navbar
-        // Lis restoran (cards)
-        // Rechèch restoran
-        // // Bouton “Commander”
-
-        </>
-    )
+function Home() {
+  return (
+    <div>Home</div>
+  )
 }
+
+export default Home
