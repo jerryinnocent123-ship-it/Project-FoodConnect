@@ -1,8 +1,8 @@
-import React from 'react'
+
 
 function Login() {
   return (
-    <div>Login</div>
+    <div>Login sa se nan pages li ye</div>
   )
 }
 
