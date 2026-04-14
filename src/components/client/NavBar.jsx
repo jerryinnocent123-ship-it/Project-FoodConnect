@@ -7,7 +7,11 @@ function NavBar() {
       <Link to="/about">About</Link>
       <Link to="/restaurant">Restaurant</Link>
       <Link to="/contact">Contact</Link>
+      <Link to="/login">Login</Link>
+      <Link to="/signup">Signup</Link>
     </div>
+
+    
 
   )
 }
