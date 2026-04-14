@@ -1,8 +1,11 @@
-import React from 'react'
+import NavBar from "../../components/client/NavBar"
 
 function Restaurant() {
   return (
-    <div>Restaurant</div>
+    <div>
+      <NavBar />
+      <h1>Restaurant</h1>
+    </div>
   )
 }
 

@@ -1,8 +1,11 @@
-import React from 'react'
+import NavBar from "../../components/client/NavBar"
 
 function About() {
   return (
-    <div>About</div>
+    <div>
+      <NavBar />
+      <h1>About</h1>
+    </div>
   )
 }
 
