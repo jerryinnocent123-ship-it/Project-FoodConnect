@@ -1,5 +1,3 @@
-// import state
-import {useState,useEffect,useContext} from 'react'
 
 
 import {Routes, Route} from 'react-router-dom'
@@ -33,6 +31,9 @@ function App() {
       <Route path="/paiment" element={<Paiment />} />     
       <Route path="/admin/dashboard" element={<Dashboard />} />
       <Route path="/restaurant/dashboard" element={<Dashboards />} />
+      {/* Login */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Register />} />
     </Routes>
   )
 }
