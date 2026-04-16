@@ -23,7 +23,7 @@ export const Register = () => {
       if (error) throw error
 
       if (role === 'restaurant') {
-        navigate('/restaurant-dashboard')
+        navigate('/restaurant/Dashboards')
       } else {
         navigate('/')
       }

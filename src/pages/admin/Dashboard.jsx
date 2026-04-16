@@ -1,8 +1,10 @@
-import React from 'react'
+import { Sidebar } from "lucide-react"
+import SideBar from "../../layouts/SideBarAdmin"
 
 function Dashboard() {
   return (
-    <div>Dashboard</div>
+    <div>Dashboard Amin</div>
+   
   )
 }
 

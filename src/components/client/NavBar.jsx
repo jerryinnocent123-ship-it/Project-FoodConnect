@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { HandPlatter } from 'lucide-react';
-
-
+import { HandPlatter, Home, MapPin, Info, Phone, ShoppingBag, LayoutDashboard, Menu as MenuIcon, ClipboardList } from 'lucide-react'
 
 
 const NavBar = () => {
@@ -17,26 +15,26 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     await signOut()
-    navigate('/login')
+    navigate('/')
     setIsDropdownOpen(false)
   }
 
   const navLinks = () => {
     const links = [
-      { name: 'Home', path: '/' },
-      { name: 'Restaurants', path: '/restaurant' },
-      { name: 'About', path: '/about' },
-      { name: 'Contact', path: '/contact' }
+      { name: 'Home', path: '/', icon: Home },
+      { name: 'Restaurants', path: '/restaurant', icon: MapPin },
+      { name: 'About', path: '/about', icon: Info },
+      { name: 'Contact', path: '/contact', icon: Phone }
     ]
 
     if (userRole === 'client') {
-      links.push({ name: 'Orders', path: '/orders' })
+      links.push({ name: 'Cart', path: '/Cart', icon: ShoppingBag })
     }
 
     if (userRole === 'restaurant') {
-      links.push({ name: 'Dashboard', path: '/restaurant-dashboard' })
-      links.push({ name: 'Orders', path: '/restaurant-orders' })
-      links.push({ name: 'Menu', path: '/restaurant-menu' })
+      links.push({ name: 'Dashboard', path: '/restaurant/dashboard', icon: LayoutDashboard })
+      links.push({ name: 'Orders', path: '/restaurant-orders', icon: ClipboardList })
+      links.push({ name: 'Menu', path: '/restaurant-menu', icon: MenuIcon })
     }
 
     return links
@@ -57,15 +55,19 @@ const NavBar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
-          {navLinks().map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className="text-gray-700 hover:text-blue-600 transition-colors duration-200"
-            >
-              {link.name}
-            </Link>
-          ))}
+          {navLinks().map((link) => {
+            const Icon = link.icon
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className="flex flex-col items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors duration-200 text-lg"
+              >
+                {Icon && <Icon className="w-5 h-5" />}
+                <span className="font-medium">{link.name}</span>
+              </Link>
+            )
+          })}
         </div>
 
         {/* Auth Buttons / User Menu */}
@@ -117,7 +119,7 @@ const NavBar = () => {
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100">
                   <Link
-                    to="/profile"
+                    to="/Profile"
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-50"
                     onClick={() => setIsDropdownOpen(false)}
                   >
@@ -170,28 +172,32 @@ const NavBar = () => {
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-100">
-            {navLinks().map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className="block py-2 text-gray-700 hover:text-blue-600"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
+            {navLinks().map((link) => {
+              const Icon = link.icon
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className="flex items-center gap-2 py-2 text-gray-700 hover:text-blue-600 text-lg"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {Icon && <Icon className="w-5 h-5" />}
+                  <span className="font-medium">{link.name}</span>
+                </Link>
+              )
+            })}
             {!user ? (
               <div className="space-y-2 pt-2">
                 <Link
                   to="/login"
-                  className="block py-2 text-gray-700 hover:text-blue-600"
+                  className="block py-2 text-gray-700 hover:text-blue-600 text-lg"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="block py-2 text-blue-600 font-semibold"
+                  className="block py-2 text-blue-600 font-semibold text-lg"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Sign Up

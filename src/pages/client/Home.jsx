@@ -5,7 +5,7 @@ function Home() {
   return (
     <div>
       <NavBar />
-      
+      <h1>Welcome to FoodConnect</h1>
     </div>
   )
 }

@@ -24,7 +24,7 @@ const Login = () => {
       const userRole = data.user?.user_metadata?.role
 
       if (userRole === 'restaurant') {
-        navigate('/restaurant-dashboard')
+        navigate('/restaurant/Dashboards')
       } else {
         navigate('/')
       }
