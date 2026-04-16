@@ -6,10 +6,10 @@ import Home from "./pages/client/Home"
 import About from "./pages/client/About"
 import Restaurant from "./pages/client/Restaurant"
 import Contact from "./pages/client/Contact"
-import Paiment from "./pages/client/Paiment"
+
 
 // login
-import Login from "./pages/Login/Login"
+import LoginPage from "./pages/Login/LoginPage"
 import Register from "./pages/Login/Register"
 // Admin
 import Dashboard from "./pages/admin/Dashboard"
@@ -28,11 +28,11 @@ function App() {
       <Route path="/about" element={<About />} />
       <Route path="/restaurant" element={<Restaurant />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path="/paiment" element={<Paiment />} />     
+          
       <Route path="/admin/dashboard" element={<Dashboard />} />
       <Route path="/restaurant/dashboard" element={<Dashboards />} />
       {/* Login */}
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<Register />} />
     </Routes>
   )

@@ -1,11 +1,8 @@
-import NavBar from "../../components/client/NavBar"
+import React from 'react'
 
 function Menu() {
   return (
-    <div>
-      <NavBar />
-      <h1>Menu</h1>
-    </div>
+    <div>Menu</div>
   )
 }
 

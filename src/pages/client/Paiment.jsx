@@ -1,11 +1,8 @@
-import NavBar from "../../components/client/NavBar"
+import React from 'react'
 
 function Paiment() {
   return (
-    <div>
-      <NavBar />
-      <h1>Paiment</h1>
-    </div>
+    <div>Paiment</div>
   )
 }
 
