@@ -1,5 +1,6 @@
 import NavBar from "../../components/client/NavBar"
 import Hero from "../../components/client/Hero"
+import SearchBar from "../../components/client/SearchBar"
 
 
 function Home() {
@@ -8,6 +9,7 @@ function Home() {
     <div>
       <NavBar />
       <Hero />
+      <SearchBar />
     </div>
  </>
   )
