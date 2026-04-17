@@ -1,9 +1,9 @@
 import { Sidebar } from "lucide-react"
-import SideBar from "../../layouts/SideBarAdmin"
+import SideBarAdmin from "../../layouts/SideBarAdmin"
 
 function Dashboard() {
   return (
-    <div>Dashboard Amin</div>
+    <div>Dashboard Admin</div>
    
   )
 }
