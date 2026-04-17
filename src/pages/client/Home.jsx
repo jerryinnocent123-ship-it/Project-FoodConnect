@@ -1,12 +1,15 @@
 import NavBar from "../../components/client/NavBar"
+import Hero from "../../components/client/Hero"
 
 
 function Home() {
   return (
+ <>
     <div>
       <NavBar />
-      <h1>Welcome to FoodConnect</h1>
+      <Hero />
     </div>
+ </>
   )
 }
 
