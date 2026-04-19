@@ -1,15 +1,18 @@
+import { useTranslation } from "react-i18next";
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { HandPlatter, Home, MapPin, Info, Phone, ShoppingBag, LayoutDashboard, Menu as MenuIcon, ClipboardList } from 'lucide-react'
+import { HandPlatter, Home, MapPin, Info, Phone, ShoppingBag, LayoutDashboard, Menu as MenuIcon, ClipboardList, Globe } from 'lucide-react'
 
 const NavBar = () => {
+  const { t, i18n } = useTranslation() // ✅ deja la
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isLangOpen, setIsLangOpen] = useState(false) // ✅ nouvo eta pou dropdown lang
 
-  const userRole = user?.role  // ← modifié ici
+  const userRole = user?.role  
   const userEmail = user?.email
 
   const handleLogout = async () => {
@@ -18,26 +21,32 @@ const NavBar = () => {
     setIsDropdownOpen(false)
   }
 
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng)
+    setIsLangOpen(false)
+  }
+
   const navLinks = () => {
     const links = [
-      { name: 'Home', path: '/', icon: Home },
-      { name: 'Restaurants', path: '/restaurant', icon: MapPin },
-      { name: 'About', path: '/about', icon: Info },
-      { name: 'Contact', path: '/contact', icon: Phone }
+      // ✅ Chak non ap pase nan t() pou tradui
+      { name: t('Home'), path: '/', icon: Home },
+      { name: t('Restaurants'), path: '/restaurant', icon: MapPin },
+      { name: t('About'), path: '/about', icon: Info },
+      { name: t('Contact'), path: '/contact', icon: Phone }
     ]
 
     if (userRole === 'client') {
-      links.push({ name: 'Cart', path: '/Cart', icon: ShoppingBag })
+      links.push({ name: t('Cart'), path: '/Cart', icon: ShoppingBag })
     }
 
     if (userRole === 'restaurant') {
-      links.push({ name: 'Dashboard', path: '/restaurant/Dashboards', icon: LayoutDashboard })
-      links.push({ name: 'Orders', path: '/restaurant-orders', icon: ClipboardList })
-      links.push({ name: 'Menu', path: '/restaurant-menu', icon: MenuIcon })
+      links.push({ name: t('Dashboard'), path: '/restaurant/Dashboards', icon: LayoutDashboard })
+      links.push({ name: t('Orders'), path: '/restaurant-orders', icon: ClipboardList })
+      links.push({ name: t('Menu'), path: '/restaurant-menu', icon: MenuIcon })
     }
 
     if (userRole === 'admin') {
-      links.push({ name: 'Admin Dashboard', path: '/admin/dashboard', icon: LayoutDashboard })
+      links.push({ name: t('Admin Dashboard'), path: '/admin/dashboard', icon: LayoutDashboard })
     }
 
     return links
@@ -72,12 +81,35 @@ const NavBar = () => {
           })}
         </div>
 
-        {/* Auth Buttons / User Menu */}
+        {/* ✅ Nouvo: Selecteur Lang + Auth */}
         <div className="hidden md:flex items-center space-x-4">
+          {/* Language Dropdown */}
+          <div className="relative">
+            <button 
+              onClick={() => setIsLangOpen(!isLangOpen)} 
+              className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition-colors duration-200"
+            >
+              <Globe className="w-5 h-5" />
+              <span className="uppercase">{i18n.language}</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {isLangOpen && (
+              <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg py-2 border border-gray-100 z-50">
+                <button onClick={() => changeLanguage('en')} className="block w-full text-left px-4 py-2 hover:bg-gray-50">English</button>
+                <button onClick={() => changeLanguage('fr')} className="block w-full text-left px-4 py-2 hover:bg-gray-50">Français</button>
+                <button onClick={() => changeLanguage('ht')} className="block w-full text-left px-4 py-2 hover:bg-gray-50">Kreyòl</button>
+              </div>
+            )}
+          </div>
+
+          {/* Auth Buttons (ak t()) */}
           {!user ? (
             <>
-              <Link to="/login" className="text-gray-700 hover:text-blue-600">Login</Link>
-              <Link to="/signup" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Sign Up</Link>
+              <Link to="/login" className="text-gray-700 hover:text-blue-600">{t('Login')}</Link>
+              <Link to="/signup" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">{t('Signup')}</Link>
             </>
           ) : (
             <div className="relative">
@@ -94,10 +126,10 @@ const NavBar = () => {
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-100">
                   <Link to="/Profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-50" onClick={() => setIsDropdownOpen(false)}>
-                    Profile
+                    {t('Profile')}
                   </Link>
                   <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-50">
-                    Logout
+                    {t('Logout')}
                   </button>
                 </div>
               )}
@@ -105,8 +137,22 @@ const NavBar = () => {
           )}
         </div>
 
-        {/* Mobile menu button */}
-        <div className="md:hidden">
+        {/* Mobile: bouton lang + menu */}
+        <div className="md:hidden flex items-center gap-3">
+          {/* Mobile Language Switcher */}
+          <div className="relative">
+            <button onClick={() => setIsLangOpen(!isLangOpen)} className="flex items-center text-gray-700">
+              <Globe className="w-5 h-5" />
+            </button>
+            {isLangOpen && (
+              <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg py-2 border border-gray-100 z-50">
+                <button onClick={() => changeLanguage('en')} className="block w-full text-left px-4 py-2 hover:bg-gray-50">English</button>
+                <button onClick={() => changeLanguage('fr')} className="block w-full text-left px-4 py-2 hover:bg-gray-50">Français</button>
+                <button onClick={() => changeLanguage('ht')} className="block w-full text-left px-4 py-2 hover:bg-gray-50">Kreyòl</button>
+              </div>
+            )}
+          </div>
+
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-gray-700 focus:outline-none">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isMobileMenuOpen ? (
@@ -119,7 +165,7 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden py-4 border-t border-gray-100">
           {navLinks().map((link) => {
@@ -138,14 +184,14 @@ const NavBar = () => {
           })}
           {!user ? (
             <div className="space-y-2 pt-2">
-              <Link to="/login" className="block py-2 text-gray-700 hover:text-blue-600 text-lg" onClick={() => setIsMobileMenuOpen(false)}>Login</Link>
-              <Link to="/signup" className="block py-2 text-blue-600 font-semibold text-lg" onClick={() => setIsMobileMenuOpen(false)}>Sign Up</Link>
+              <Link to="/login" className="block py-2 text-gray-700 hover:text-blue-600 text-lg" onClick={() => setIsMobileMenuOpen(false)}>{t('Login')}</Link>
+              <Link to="/signup" className="block py-2 text-blue-600 font-semibold text-lg" onClick={() => setIsMobileMenuOpen(false)}>{t('Signup')}</Link>
             </div>
           ) : (
             <div className="pt-2 border-t border-gray-100">
               <div className="py-2 text-gray-600">{userEmail}</div>
               <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false) }} className="block w-full text-left py-2 text-red-600">
-                Logout
+                {t('Logout')}
               </button>
             </div>
           )}
