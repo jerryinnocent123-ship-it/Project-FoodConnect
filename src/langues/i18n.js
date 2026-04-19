@@ -19,7 +19,19 @@ const resources = {
       "Profile": "Profile",
       "Logout": "Logout",
       "welcome": "Welcome to our Restaurant",
-      "view_menu": "View Menu"
+      "view_menu": "View Menu",
+      "Register": "Register",
+      "Full name": "Full name",
+      "Email": "Email",
+      "Password": "Password",
+      "Phone": "Phone",
+      "Address": "Address",
+      "Creating...": "Creating...",
+      "Already have an account?": "Already have an account?",
+      "Login": "Login",
+      "Delicious Food, Delivered To You":"Delicious Food, Delivered To You",
+      "Order your favorite meals from local restaurants in minutes.":"Order your favorite meals from local restaurants in minutes.",
+      "Order Now":"Order Now"
     }
   },
   fr: {
@@ -38,7 +50,19 @@ const resources = {
       "Profile": "Profil",
       "Logout": "Déconnexion",
       "welcome": "Bienvenue dans notre Restaurant",
-      "view_menu": "Voir le Menu"
+      "view_menu": "Voir le Menu",
+      "Register": "S'inscrire",
+      "Full name": "Nom complet",
+      "Email": "Email",
+      "Password": "Mot de passe",
+      "Phone": "Téléphone",
+      "Address": "Adresse",
+      "Creating...": "Création en cours...",
+      "Already have an account?": "Vous avez déjà un compte ?",
+      "Login": "Connexion",
+      "Delicious Food, Delivered To You":"De délicieux plats, livrés chez vous",
+      "Order your favorite meals from local restaurants in minutes.":"Commandez vos plats préférés auprès de restaurants locaux en quelques minutes.  ",
+      "Order Now":"Commandez maintenant"
     }
   },
   ht: {
@@ -57,7 +81,20 @@ const resources = {
       "Profile": "Profil",
       "Logout": "Dekonekte",
       "welcome": "Byenveni nan Restoran nou an",
-      "view_menu": "Gade Menu a"
+      "view_menu": "Gade Menu a",
+      "Register": "Enskri",
+      "Full name": "Non konplè",
+      "Email": "Imèl",
+      "Password": "Modpas",
+      "Phone": "Telefòn",
+      "Address": "Adrès",
+      "Creating...": "Kreye...",
+      "Already have an account?": "Ou gen deja yon kont ?",
+      "Login": "Konekte",
+      "Delicious Food, Delivered To You":"Bon manje, livre Lakay Ou",
+      "Order your favorite meals from local restaurants in minutes.":"Kòmande manje ou pi renmen nan restoran lokal nan kèk minit.",
+      "Order Now":"Kòmande Kounye a"
+
     }
   }
 };
