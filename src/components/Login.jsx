@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useTranslation } from "react-i18next";
+
 
 const getRedirectPath = (role) => {
   const normalizedRole = typeof role === 'string' ? role.trim().toLowerCase() : 'client'
@@ -41,15 +43,15 @@ const Login = () => {
       setLoading(false)
     }
   }
-
+const { t } = useTranslation();
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white p-8 rounded shadow">
-        <h2 className="text-2xl font-bold text-center">Login</h2>
+        <h2 className="text-2xl font-bold text-center">{t('Login')}</h2>
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <input
             type="email"
-            placeholder="Email"
+            placeholder={t('Email')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full border p-2 rounded"
@@ -57,7 +59,7 @@ const Login = () => {
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder={t('Password')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full border p-2 rounded"
@@ -69,11 +71,11 @@ const Login = () => {
             disabled={loading}
             className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50"
           >
-            {loading ? 'Signing in...' : 'Sign in'}
+           {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
         <p className="mt-4 text-center">
-          No account? <Link to="/signup" className="text-blue-600">Sign up</Link>
+          {t('No account?')} <Link to="/signup" className="text-blue-600">{t('Sign up')}</Link>
         </p>
       </div>
     </div>
