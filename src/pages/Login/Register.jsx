@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -32,24 +33,24 @@ const Register = () => {
       setLoading(false)
     }
   }
-
+const { t } = useTranslation();
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white p-8 rounded shadow">
-        <h2 className="text-2xl font-bold text-center">Register</h2>
+        <h2 className="text-2xl font-bold text-center">{t('Register')}</h2>
         <form onSubmit={handleSubmit} className="mt-4 space-y-3">
-          <input name="full_name" placeholder="Full name" onChange={handleChange} required className="w-full border p-2 rounded" />
-          <input name="email" type="email" placeholder="Email" onChange={handleChange} required className="w-full border p-2 rounded" />
-          <input name="password" type="password" placeholder="Password" onChange={handleChange} required className="w-full border p-2 rounded" />
-          <input name="tel" placeholder="Phone" onChange={handleChange} required className="w-full border p-2 rounded" />
-          <input name="adresse" placeholder="Address" onChange={handleChange} required className="w-full border p-2 rounded" />
+          <input name={t('Full name')} placeholder={t('Full name')} onChange={handleChange} required className="w-full border p-2 rounded" />
+          <input name="email" type="email" placeholder={t('Email')} onChange={handleChange} required className="w-full border p-2 rounded" />
+          <input name="password" type="password" placeholder={t('Password')} onChange={handleChange} required className="w-full border p-2 rounded" />
+          <input name="tel" placeholder={t('Phone')} onChange={handleChange} required className="w-full border p-2 rounded" />
+          <input name="adresse" placeholder={t('Address')} onChange={handleChange} required className="w-full border p-2 rounded" />
           <select name="role" onChange={handleChange} className="w-full border p-2 rounded">
             <option value="client">Client</option>
             <option value="restaurant">Restaurant</option>
           </select>
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button type="submit" disabled={loading} className="w-full bg-blue-600 text-white py-2 rounded">
-            {loading ? 'Creating...' : 'Sign up'}
+            {loading ? t('Creating...') : t('Sign up')}
           </button>
         </form>
         <p className="mt-4 text-center">Already have an account? <Link to="/login" className="text-blue-600">Login</Link></p>
