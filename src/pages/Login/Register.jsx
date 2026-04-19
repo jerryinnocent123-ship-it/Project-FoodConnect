@@ -39,7 +39,7 @@ const { t } = useTranslation();
       <div className="max-w-md w-full bg-white p-8 rounded shadow">
         <h2 className="text-2xl font-bold text-center">{t('Register')}</h2>
         <form onSubmit={handleSubmit} className="mt-4 space-y-3">
-          <input name={t('Full name')} placeholder={t('Full name')} onChange={handleChange} required className="w-full border p-2 rounded" />
+          <input name="full_name" placeholder={t('Full name')} onChange={handleChange} required className="w-full border p-2 rounded" />
           <input name="email" type="email" placeholder={t('Email')} onChange={handleChange} required className="w-full border p-2 rounded" />
           <input name="password" type="password" placeholder={t('Password')} onChange={handleChange} required className="w-full border p-2 rounded" />
           <input name="tel" placeholder={t('Phone')} onChange={handleChange} required className="w-full border p-2 rounded" />
@@ -50,10 +50,10 @@ const { t } = useTranslation();
           </select>
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button type="submit" disabled={loading} className="w-full bg-blue-600 text-white py-2 rounded">
-            {loading ? t('Creating...') : t('Sign up')}
+            {loading ? t('Creating...') : t('Signup')}
           </button>
         </form>
-        <p className="mt-4 text-center">Already have an account? <Link to="/login" className="text-blue-600">Login</Link></p>
+        <p className="mt-4 text-center">{t('Already have an account?')} <Link to="/login" className="text-blue-600">{t('Login')}</Link></p>
       </div>
     </div>
   )

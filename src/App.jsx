@@ -17,6 +17,8 @@ import Dashboard from './pages/admin/Dashboard'
 
 // Restaurant
 import Dashboards from './pages/restaurant/Dashboards'
+import Orders from './components/resto/Orders'
+import AddMenu from './components/resto/AddMenu'
 
 // Auth
 import { ProtectedRoute } from './context/ProtectedRoute'
@@ -40,6 +42,8 @@ function App() {
       <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={['admin']}><Dashboard /></ProtectedRoute>} />
       <Route path="/restaurant/Dashboards" element={<ProtectedRoute allowedRoles={['restaurant']}><Dashboards /></ProtectedRoute>} />
       <Route path="/restaurant/dashboard" element={<ProtectedRoute allowedRoles={['restaurant']}><Dashboards /></ProtectedRoute>} />
+      <Route path="/restaurant/orders" element={<ProtectedRoute allowedRoles={['restaurant']}><Orders /></ProtectedRoute>} />
+      <Route path="/restaurant/add-menu" element={<ProtectedRoute allowedRoles={['restaurant']}><AddMenu /></ProtectedRoute>} />
 
 
       {/* Login */}

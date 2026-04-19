@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { buildDefaultUsername } from '../services/profileService'
 
 const AuthContext = createContext({})
 
@@ -60,6 +61,21 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  const refreshUser = async () => {
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession()
+
+    if (error) {
+      console.error('Error refreshing session:', error)
+      return
+    }
+
+    const nextUser = session?.user ? await buildUserWithRole(session.user) : null
+    setUser(nextUser)
+  }
+
   useEffect(() => {
     let mounted = true
 
@@ -82,7 +98,10 @@ export const AuthProvider = ({ children }) => {
     }
 
     const loadInitialSession = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession()
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession()
 
       if (error) {
         console.error('Error getting session:', error)
@@ -93,7 +112,9 @@ export const AuthProvider = ({ children }) => {
 
     loadInitialSession()
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       window.setTimeout(() => {
         syncUserFromSession(session)
       }, 0)
@@ -113,8 +134,8 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
         options: {
-          data: { full_name, tel, adresse, role: normalizedRole }
-        }
+          data: { full_name, tel, adresse, role: normalizedRole },
+        },
       })
 
       if (authError) throw authError
@@ -124,23 +145,40 @@ export const AuthProvider = ({ children }) => {
         throw new Error('Account created without a user session.')
       }
 
+      const profilePayload = {
+        id: authUser.id,
+        full_name,
+        username: buildDefaultUsername(full_name || email.split('@')[0]),
+        email,
+        tel,
+        adresse,
+        images_url: null,
+        role: normalizedRole,
+      }
+
       const { error: profileError } = await supabase
         .from('profile')
-        .upsert([{
-          id: authUser.id,
-          full_name,
-          email,
-          tel,
-          adresse,
-          role: normalizedRole
-        }], { onConflict: 'id' })
+        .upsert([profilePayload], { onConflict: 'id' })
 
       if (profileError) {
         await supabase.auth.signOut()
         throw profileError
       }
 
-      const userWithRole = { ...authUser, role: normalizedRole }
+      if (normalizedRole === 'restaurant') {
+        const { error: restaurantError } = await supabase.from('restaurants').insert({
+          name: full_name,
+          owner_id: authUser.id,
+          zone: adresse.split(',')[0]?.trim() || null,
+        })
+
+        if (restaurantError) {
+          await supabase.auth.signOut()
+          throw restaurantError
+        }
+      }
+
+      const userWithRole = { ...authUser, role: normalizedRole, profile: profilePayload }
       setUser(userWithRole)
 
       return { data: userWithRole, error: null }
@@ -179,7 +217,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut, refreshUser }}>
       {children}
     </AuthContext.Provider>
   )

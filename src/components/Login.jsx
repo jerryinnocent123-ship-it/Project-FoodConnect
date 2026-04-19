@@ -71,11 +71,11 @@ const { t } = useTranslation();
             disabled={loading}
             className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50"
           >
-           {loading ? 'Signing in...' : 'Sign in'}
+           {loading ? t('Signing in...') : t('Login')}
           </button>
         </form>
         <p className="mt-4 text-center">
-          {t('No account?')} <Link to="/signup" className="text-blue-600">{t('Sign up')}</Link>
+          {t('No account?')} <Link to="/signup" className="text-blue-600">{t('Signup')}</Link>
         </p>
       </div>
     </div>

@@ -1,17 +1,15 @@
-import NavBar from "../../components/client/NavBar"
-import Hero from "../../components/client/Hero"
-import SearchBar from "../../components/client/SearchBar"
-
+import Hero from '../../components/client/Hero'
+import RecentMenusSection from '../../components/client/RecentMenusSection'
+import RestaurantDirectory from '../../components/client/RestaurantDirectory'
+import ClientLayout from '../../layouts/ClientLayout'
 
 function Home() {
   return (
- <>
-    <div>
-      <NavBar />
+    <ClientLayout>
       <Hero />
-      <SearchBar />
-    </div>
- </>
+      <RecentMenusSection />
+      <RestaurantDirectory compact />
+    </ClientLayout>
   )
 }
 
