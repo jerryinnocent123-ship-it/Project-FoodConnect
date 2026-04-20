@@ -2,11 +2,13 @@
 // Li kapab gen ladan tou yon bouton pou ankouraje itilizatè a pou li eksplore plis sou sit la
 //  oswa pou li enskri.
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next";
+
 
 function Hero() {
   const bgHero = "../../Public/hero-bg.jpg" // chemen imaj la
   const navigate = useNavigate();
-
+  const { t } = useTranslation()
 
   return (
     <>
@@ -20,11 +22,11 @@ function Hero() {
         alignItems: 'center', color: '#fff'
       }}>
 
-        <h1 className="text-5xl font-bold text-center">Delicious Food, Delivered To You</h1>
-        <p className="text-lg text-center">Order your favorite meals from local restaurants in minutes.</p>
+        <h1 className="text-5xl font-bold text-center">{t('Delicious Food, Delivered To You')}</h1>
+        <p className="text-lg text-center">{t('Order your favorite meals from local restaurants in minutes.')}</p>
         <button onClick={() => navigate('/restaurant')}
-         className="mt-5 px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white border-none rounded-md cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#A3080B] hover:shadow-lg active:scale-95">
-          Order Now
+          className="mt-5 px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white border-none rounded-md cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#A3080B] hover:shadow-lg active:scale-95">
+          {t('Order Now')}
         </button>
       </div>
 

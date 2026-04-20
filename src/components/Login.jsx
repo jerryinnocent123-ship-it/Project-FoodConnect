@@ -1,15 +1,30 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { ErrorMessage } from '../components/client/ErrorMessage'
+import { useTranslation } from "react-i18next";
+
+
+const getRedirectPath = (role) => {
+  const normalizedRole = typeof role === 'string' ? role.trim().toLowerCase() : 'client'
+
+  if (normalizedRole === 'admin') return '/admin/dashboard'
+  if (normalizedRole === 'restaurant') return '/restaurant/Dashboards'
+  return '/'
+}
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { signIn } = useAuth()
+  const { signIn, user } = useAuth()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!user) return
+
+    navigate(getRedirectPath(user.role), { replace: true })
+  }, [user, navigate])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -18,87 +33,50 @@ const Login = () => {
 
     try {
       const { data, error } = await signIn(email, password)
-
       if (error) throw error
 
-      const userRole = data.user?.user_metadata?.role
-
-      if (userRole === 'restaurant') {
-        navigate('/restaurant/Dashboards')
-      } else {
-        navigate('/')
-      }
+      navigate(getRedirectPath(data?.user?.role), { replace: true })
     } catch (err) {
-      setError(err.message || 'Failed to sign in')
+      console.error('Login error:', err)
+      setError(err.message || 'Login failed')
     } finally {
       setLoading(false)
     }
   }
-
+const { t } = useTranslation();
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500">
-              create a new account
-            </Link>
-          </p>
-        </div>
-
-        <form className="mt-8 space-y-6 bg-white p-8 rounded-3xl shadow-xl" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-                placeholder="Enter your email"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-                placeholder="Enter your password"
-              />
-            </div>
-          </div>
-
-          <ErrorMessage message={error} />
-
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Signing in...' : 'Sign in'}
-            </button>
-          </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="max-w-md w-full bg-white p-8 rounded shadow">
+        <h2 className="text-2xl font-bold text-center">{t('Login')}</h2>
+        <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+          <input
+            type="email"
+            placeholder={t('Email')}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          />
+          <input
+            type="password"
+            placeholder={t('Password')}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full border p-2 rounded"
+            required
+          />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50"
+          >
+           {loading ? t('Signing in...') : t('Login')}
+          </button>
         </form>
+        <p className="mt-4 text-center">
+          {t('No account?')} <Link to="/signup" className="text-blue-600">{t('Signup')}</Link>
+        </p>
       </div>
     </div>
   )

@@ -1,15 +1,21 @@
-import NavBar from "../../components/client/NavBar"
-
+import { useTranslation } from 'react-i18next'
+import ClientLayout from '../../layouts/ClientLayout'
 
 export default function About() {
+  const { t } = useTranslation()
+
   return (
-    <div>
-      <NavBar />
-
-
-      <h1>About Us</h1>
-      <p>FoodConnect is a platform that connects food donors with those in need. Our mission is to reduce food waste and fight hunger by facilitating the donation of surplus food from restaurants, grocery stores, and individuals to local charities and food banks.</p>
-      <p>We believe that everyone deserves access to nutritious food, and we are committed to making it easy for donors to contribute and for recipients to receive the help they need. Join us in our mission to create a more sustainable and equitable food system.</p>
-    </div>
+    <ClientLayout>
+      <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-600">
+          {t('About')}
+        </p>
+        <h1 className="mt-2 text-4xl font-bold text-slate-900">{t('About FoodConnect')}</h1>
+        <div className="mt-6 space-y-5 text-lg leading-8 text-slate-600">
+          <p>{t('About paragraph one')}</p>
+          <p>{t('About paragraph two')}</p>
+        </div>
+      </section>
+    </ClientLayout>
   )
 }

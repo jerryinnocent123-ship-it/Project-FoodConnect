@@ -1,12 +1,11 @@
-import NavBar from "../../components/client/NavBar"
+import RestaurantDirectory from '../../components/client/RestaurantDirectory'
+import ClientLayout from '../../layouts/ClientLayout'
 
 function Restaurant() {
   return (
-    <div>
-       <NavBar />
-      <h1>Restaurant</h1>
-      <p>Welcome to our restaurant!</p>
-    </div>
+    <ClientLayout>
+      <RestaurantDirectory />
+    </ClientLayout>
   )
 }
 
