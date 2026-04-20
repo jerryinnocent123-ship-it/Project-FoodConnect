@@ -9,7 +9,7 @@ function Home() {
     <div>
       <NavBar />
       <Hero />
-      <SearchBar />
+      {/* <SearchBar /> */}
     </div>
  </>
   )
