@@ -31,6 +31,7 @@ function Contact() {
             <p className="mt-2 text-slate-600">Port-au-Prince, Haiti</p>
           </article>
         </div>
+        
       </section>
     </ClientLayout>
   )
