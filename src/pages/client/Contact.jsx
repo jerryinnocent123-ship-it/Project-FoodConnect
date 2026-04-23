@@ -1,6 +1,7 @@
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import ClientLayout from '../../layouts/ClientLayout'
+import ContactForm from '../../components/client/ContactForm'
 
 function Contact() {
   const { t } = useTranslation()
@@ -23,7 +24,7 @@ function Contact() {
           <article className="rounded-[2rem] bg-white p-6 shadow-sm">
             <Mail className="h-6 w-6 text-orange-500" />
             <h2 className="mt-4 text-xl font-semibold text-slate-900">{t('Email')}</h2>
-            <p className="mt-2 text-slate-600">support@foodconnect.ht</p>
+            <p className="mt-2 text-slate-600">Convengtonvilbrun@gmail.com</p>
           </article>
           <article className="rounded-[2rem] bg-white p-6 shadow-sm">
             <MapPin className="h-6 w-6 text-orange-500" />
@@ -31,7 +32,11 @@ function Contact() {
             <p className="mt-2 text-slate-600">Port-au-Prince, Haiti</p>
           </article>
         </div>
-        
+
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold text-slate-900 mb-6">{t('Send us a message')}</h2>
+          <ContactForm />
+        </div>
       </section>
     </ClientLayout>
   )
