@@ -26,6 +26,12 @@
 *  Tailwind CSS
 *  i18next (i18n)
 *  Supabase (Auth, Database, API)
+*  AI
+
+## Utilisation AI
+* AI a jouer un role important dans le projet en corrigeant les bugs, pour ne citez que ceci.
+* 50% AI
+
 
 ---
 
@@ -59,7 +65,7 @@ cd Project-FoodConnect
 
 ### 2. Installer les dépendances
 
-bash
+bash / Cmd
 npm install
 
 
@@ -73,14 +79,13 @@ Créer un fichier `.env` à la racine :
 VITE_SUPABASE_URL=your_url
 VITE_SUPABASE_ANON_KEY=your_key
 
-Lap nan fichye a men pa sou github
- 
+siw vle itilize menm .env lan, kontakte Access Group 
 
 ---
 
 ### 4. Lancer le projet
 
-bash
+bash / Cmd
 npm run dev
 
 
@@ -130,11 +135,11 @@ La base de données est gérée via Supabase :
 
 ---
 
-##  Sécurité
+##  Sécurité 
 
 * Authentification sécurisée avec Supabase
 * Gestion des accès via rôles
-* Row Level Security (RLS) recommandé
+* Row Level Security (RLS) recommandé (pas Appliquer dans le projet)
 
 ---
 
@@ -154,13 +159,20 @@ Créer une plateforme simple, rapide et évolutive pour :
 *  Recherche “restaurants proches de moi”
 *  Paiement en ligne (MonCash, etc.)
 *  Système d’avis et notes
+*  Suivi de commandes
+*  Modification Menu (acess Restaurant and Admin)
 
 ---
 
 ##  Auteur
 
-**INNOCENT JERRY**
-[jerryinnocent123@gmail.com]
+Acces Group :
+* INNOCENT Jerry | jerryinnocent123@gmail.com
+
+-Lumenes lyse A. | lysalumenes17@gma 
+-MONDESIR Lea Jennifer | Mleajennifer@gmail
+-Conventon | convengtonvilbrun@gmail.com
+
 
 ---
 
