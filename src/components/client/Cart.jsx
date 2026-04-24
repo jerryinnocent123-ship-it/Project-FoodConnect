@@ -15,7 +15,7 @@ function Cart() {
 
     const message =
       paymentMethod === 'moncash'
-        ? t('Your Moncash payment option is selected. We will redirect you soon.')
+        ? t('Your Moncash payment is not implemented yet. Please choose another payment method.')
         : t('Cash on delivery selected. Please keep your phone available for delivery.')
 
     setCheckoutMessage(message)
