@@ -11,7 +11,8 @@ export async function fetchRestaurantByOwner(ownerId) {
     .from('restaurants')
     .select('id, name, owner_id, zone, lat, lng, created_at')
     .eq('owner_id', ownerId)
-    .maybeSingle()
+    .limit(1)
+    .single()
 
   if (error) {
     throw error
