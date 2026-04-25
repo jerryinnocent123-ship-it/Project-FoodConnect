@@ -1,8 +1,11 @@
-import React from 'react'
+import RestaurantDirectory from '../../components/client/RestaurantDirectory'
+import ClientLayout from '../../layouts/ClientLayout'
 
 function Restaurant() {
   return (
-    <div>Restaurant</div>
+    <ClientLayout>
+      <RestaurantDirectory />
+    </ClientLayout>
   )
 }
 
