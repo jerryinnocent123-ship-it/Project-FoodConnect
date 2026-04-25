@@ -1,34 +1,190 @@
-    <div className='text-part1'>
-  <h3> Who are we?</h3>
-      <p>We are a team of passionate individuals dedicated to providing the best food delivery experience.
-        We are committed to connecting customers with their favorite local restaurants and ensuring that every meal is delivered fresh and on time. Our mission is to make food delivery convenient, reliable, and enjoyable for everyone.
-        So our team is made up of talented individuals who are passionate about food and technology. We work tirelessly to create a seamless and enjoyable experience for our customers, and we are always looking for ways to improve and innovate in the food delivery industry.
-        Food Connect is more than just a food delivery service; it's a community of food lovers who share a common goal of bringing delicious meals to people's doorsteps. We are proud to be a part of this community and look forward to serving you in the future.
-        As long as we are in business, we will continue to strive to provide the best food delivery experience possible. We are committed to our customers and will always go above and beyond to ensure their satisfaction. Thank you for choosing Food Connect, and we look forward to serving you soon! Here for you, here to serve you!
-      </p>
-    </div>
+<<<<<<< HEAD
+   
+ 
+ 
+ 
+ 
+=======
+<<<<<<< HEAD
+Hello wap travay nan Foodconnect/src/components/client/profil.jsx m pa konn kijan wap jere sa ak lea nan antann nou
 
-    <div className='text-part2'>
-      <h3>Our value</h3>
-      <p> Serving with respect
-          Attention
-          Love
-          Enjoyment
-          and in a good mood are the real sides of our values.</p>
-    </div>
+nou pa gen dwa al nan lot compozan al modifye anyn
+=======
+<<<<<<< HEAD
 
-    <div className='Join'>
-      <h3>Join us</h3>
-      <p>As you can understand, you cannot make this amazing adventure alone, the thing is:"Us, here for you"!
-        This is a collaboration that includes your engagement to our platform.
-        Then click on to join us quickly!
-      </p>
-    </div>
-         <div className="button">
-           <Link to={"/Login"}> <button>Join</button></Link>
-        </div>
+
+
+#  Project FoodConnect
+
+**FoodConnect** se yon aplikasyon web modèn ki pèmèt itilizatè jwenn, eksplore epi kominike ak restoran lokal fasilman. Li fèt pou amelyore koneksyon ant kliyan ak restoran atravè yon entèfas rapid, senp, epi entèaktif.
+
+---
+##  Fonctionnalités principales
+
+*  **Authentification** (inscription / connexion) avèk Supabase
+*  **Gestion des rôles** :
+
+  * Utilisateur → ka wè restoran yo
+  * Restaurant → gen aksè ak dashboard pou jere meni ak profil
+*  **Liste restaurants** ak detay (zone, localisation, etc.)
+*  **Localisation restaurants** (lat/lng) pou entegrasyon map
+*  **Multilangue (i18n)** → Anglais, Français, Créole
+*  **Interface rapide et moderne** gras à Tailwind CSS & UI libraries
+*  **Composants réutilisables** (Navbar, Cards, Forms, etc.)
+
+---
+
+## Technologies utilisées
+*  React.js
+*  Tailwind CSS
+*  i18next (i18n)
+*  Supabase (Auth, Database, API)
+
+---
+
+## Structure du projet
+
+FoodConnect/
+|-Src\
+|-Components\
+            |-Client
+            |-Admin
+            |-Resto
+|-Langues
+|-Layouts
+|-Pages\
+       |-Client
+        |-Admin
+        |-Resto     
+|-Services
+
+---
+
+##  Installation & utilisation
+
+### 1. Cloner le projet
+
+bash
+git clone https://github.com/ton-repo/Project-FoodConnect.git
+cd Project-FoodConnect
+
+---
+
+### 2. Installer les dépendances
+
+bash
+npm install
+
+
+---
+
+### 3. Configurer les variables d’environnement
+
+Créer un fichier `.env` à la racine :
+
+.env
+VITE_SUPABASE_URL=your_url
+VITE_SUPABASE_ANON_KEY=your_key
+
+Lap nan fichye a men pa sou github
  
+
+---
+
+### 4. Lancer le projet
+
+bash
+npm run dev
+
+
+ L’application sera accessible sur :
+
  
+http://localhost:5173
  
- 
- 
+
+---
+
+## Comment utiliser l’application
+
+### Utilisateur
+
+* Créer un compte / se connecter
+* Parcourir les restaurants
+* Voir leur localisation et informations
+
+###  Restaurant
+
+* Se connecter
+* Accéder au dashboard
+* Gérer profil et menus
+
+---
+
+## Internationalisation
+
+Le projet utilise **i18n** pour supporter plusieurs langues :
+
+* 🇺🇸 English
+* 🇫🇷 Français
+* 🇭🇹 Créole
+
+ Langue configurable dynamiquement dans l’interface.
+
+---
+
+##  Base de données
+
+La base de données est gérée via Supabase :
+
+* Table `restaurants`
+* Colonnes : `name`, `zone`, `lat`, `lng`, etc.
+* Support des requêtes API en temps réel
+
+---
+
+##  Sécurité
+
+* Authentification sécurisée avec Supabase
+* Gestion des accès via rôles
+* Row Level Security (RLS) recommandé
+
+---
+
+##  Objectif du projet
+
+Créer une plateforme simple, rapide et évolutive pour :
+
+* connecter utilisateurs et restaurants
+* faciliter la découverte locale
+* offrir une expérience moderne
+
+---
+
+##  Améliorations futures
+
+*  Intégration Google Maps / Leaflet
+*  Recherche “restaurants proches de moi”
+*  Paiement en ligne (MonCash, etc.)
+*  Système d’avis et notes
+
+---
+
+##  Auteur
+
+**INNOCENT JERRY**
+[jerryinnocent123@gmail.com]
+
+---
+
+##  Licence
+
+Projet open-source pour apprentissage et amélioration continue.
+=======
+Hello wap travay nan Foodconnect/src/components/client/profil.jsx
+m pa konn kijan wap jere sa ak lea nan antann nou
+
+nou pa gen dwa al nan lot compozan al modifye anyn
+>>>>>>> dev-j
+>>>>>>> origin/dev-j
+>>>>>>> 94ec3c4981cbce5a4ec9076696d08462acd3e318
