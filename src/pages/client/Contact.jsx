@@ -24,7 +24,7 @@ function Contact() {
           <article className="rounded-[2rem] bg-white p-6 shadow-sm">
             <Mail className="h-6 w-6 text-orange-500" />
             <h2 className="mt-4 text-xl font-semibold text-slate-900">{t('Email')}</h2>
-            <p className="mt-2 text-slate-600">Convengtonvilbrun@gmail.com</p>
+            <p className="mt-2 text-slate-600">support@foodconnect.ht</p>
           </article>
           <article className="rounded-[2rem] bg-white p-6 shadow-sm">
             <MapPin className="h-6 w-6 text-orange-500" />
