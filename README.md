@@ -57,7 +57,7 @@ FoodConnect/
 
 ## bash
 git clone https://github.com/ton-repo/Project-FoodConnect.git
-cd Project-FoodConnect
+# cd Project-FoodConnect
 
 ---
 
