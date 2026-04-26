@@ -3,6 +3,8 @@ import { LocateFixed, MapPin, Search, UtensilsCrossed } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { fetchMenusByRestaurant, fetchRestaurants } from '../../services/menuService'
 import { useCart } from '../../context/CartContext'
+import RestaurantSkeleton from "../UI/RestaurantSkeleton"
+import MenuSkeleton from "../UI/MenuSkeleton"
 
 const getDistance = (lat1, lon1, lat2, lon2) => {
   const R = 6371
@@ -11,9 +13,9 @@ const getDistance = (lat1, lon1, lat2, lon2) => {
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2)
+    Math.cos((lat2 * Math.PI) / 180) *
+    Math.sin(dLon / 2) *
+    Math.sin(dLon / 2)
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
   return R * c
 }
@@ -214,7 +216,13 @@ function RestaurantDirectory({ compact = false }) {
         {locationError && <p className="text-sm text-red-600">{locationError}</p>}
       </div>
 
-      {loadingRestaurants && <p className="text-slate-600">{t('Loading restaurants...')}</p>}
+      {loadingRestaurants && (
+        <div className="grid gap-5 md:grid-cols-2">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <RestaurantSkeleton key={i} />
+          ))}
+        </div>
+      )}
       {!loadingRestaurants && error && <p className="text-red-600">{error}</p>}
 
       {!loadingRestaurants && !error && (
@@ -280,7 +288,13 @@ function RestaurantDirectory({ compact = false }) {
               </p>
             </div>
 
-            {loadingMenus && <p className="text-slate-300">{t('Loading menus...')}</p>}
+            {loadingMenus && (
+              <div className="space-y-4">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <MenuSkeleton key={i} />
+                ))}
+              </div>
+            )}
 
             {!loadingMenus && menus.length === 0 && (
               <div className="rounded-3xl border border-dashed border-slate-700 p-6 text-slate-300">
