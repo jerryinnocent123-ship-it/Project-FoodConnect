@@ -1,5 +1,5 @@
 import { CircleArrowLeft } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import { Link } from 'react-router-dom'
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
@@ -57,7 +57,7 @@ export default function Paiement() {
             </div>
 
                 <div>
-                    {/* input yo plis btn nan ap anndan la */}
+                    {/* input yo plis btn nan ap anndan */}
                 </div>
 
 
