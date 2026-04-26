@@ -3,9 +3,11 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useCart } from '../../context/CartContext'
 import ClientLayout from '../../layouts/ClientLayout'
+import { useNavigate } from 'react-router-dom'
 
 function Cart() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { cartItems, totalPrice, updateQuantity, removeFromCart, clearCart } = useCart()
   const [paymentMethod, setPaymentMethod] = useState('moncash')
   const [checkoutMessage, setCheckoutMessage] = useState('')
@@ -14,8 +16,8 @@ function Cart() {
     if (cartItems.length === 0) return
 
     const message =
-      paymentMethod === 'moncash'
-        ? t('Your Moncash payment is not implemented yet. Please choose another payment method.')
+      paymentMethod === 'moncash'?
+         navigate('/Paiement')
         : t('Cash on delivery selected. Please keep your phone available for delivery.')
 
     setCheckoutMessage(message)

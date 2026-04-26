@@ -7,6 +7,7 @@ import Restaurant from './pages/client/Restaurant'
 import Contact from './pages/client/Contact'
 import Cart from './components/client/Cart'
 import Profile from './components/client/Profile'
+import Paiement from './components/client/Paiement'
 
 // login
 import LoginPage from './pages/Login/LoginPage'
@@ -35,6 +36,7 @@ function App() {
       <Route path="/restaurant" element={<Restaurant />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/Paiement" element= {<Paiement/>} />
       <Route path="/Profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
