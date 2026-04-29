@@ -1,26 +1,4 @@
-<<<<<<< HEAD
-broh wap fe dashBoard restaurant
 
-ou pa gen dwa modifye anyen nan lot compozan yo
-wap travay nan FoodConnect/src/components/resto
-
-wap ret nan sa selman lew finn wap push sou git hub mwen map pull m verifye,modifye epi map metel nan branch dev 
-
-
-=======
-<<<<<<< HEAD
-   
- 
- 
- 
- 
-=======
-<<<<<<< HEAD
-Hello wap travay nan Foodconnect/src/components/client/profil.jsx m pa konn kijan wap jere sa ak lea nan antann nou
-
-nou pa gen dwa al nan lot compozan al modifye anyn
-=======
-<<<<<<< HEAD
 
 
 
@@ -202,12 +180,3 @@ Acces Group :
 ##  Licence
 
 Projet open-source pour apprentissage et amélioration continue.
->>>>>>> dev
-=======
-Hello wap travay nan Foodconnect/src/components/client/profil.jsx
-m pa konn kijan wap jere sa ak lea nan antann nou
-
-nou pa gen dwa al nan lot compozan al modifye anyn
->>>>>>> dev-j
->>>>>>> origin/dev-j
->>>>>>> 94ec3c4981cbce5a4ec9076696d08462acd3e318
