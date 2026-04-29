@@ -7,7 +7,7 @@ import htCommon from './locales/ht/common.json';
 
 const resources = {
   en: { common: enCommon },
-  fr: { common: frCommon },
+  fr: { common: frCommon }, 
   ht: { common: htCommon },
 };
 
