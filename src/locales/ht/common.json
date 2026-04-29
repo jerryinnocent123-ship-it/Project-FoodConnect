@@ -48,6 +48,7 @@
   "Enter your address": "Antre adrès ou",
   
   "Role": "Wòl",
+  "Submit":"soumet",
   
   "Save Profile": "Sove pwofil",
 
@@ -71,6 +72,10 @@
   "Dishes": "Plat",
   "View Menu": "Gade meni",
   "Selected Restaurant": "Restoran chwazi",
+  "Signing in":"Kreatyon...",
+   "Contact Us":"Kontakte nou ",
+   "Contact description":"Kontak deskriptyon",
+   "Send us a message":"Voye yon mesaj",
   "Pick a restaurant": "Chwazi yon restoran",
   "Choose a restaurant to see its menus.": "Chwazi yon restoran pou wè meni li yo.",
    "Delicious Food, Delivered To You": "Manje bon gou livre dirèk lakay ou",
@@ -127,6 +132,7 @@
   "Register": "Enskri",
   "Full name": "Non konplè",
   "Email": "Imèl",
+  "Your Name":"Non w ",
   "Password": "Mot de pas",
   "Confirm Password": "Konfime mot de pas",
  

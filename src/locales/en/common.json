@@ -12,6 +12,7 @@
   "Signup": "Sign up",
   "Profile": "Profile",
   "Logout": "Logout",
+  "Signing in":"Signing in",
 
   "Your Cart": "Your Cart",
   "Your cart is empty.": "Your cart is empty.",
@@ -125,6 +126,11 @@
   "Latest Users": "Latest Users",
   "Unknown role": "Unknown role",
   "Register": "Register",
+  "Contact Us":"Contact Us",
+   "Contact description": "Contact description",
+   "Send us a message":"Send us a message",
+  "Your Name":"Your name",
+   "Submit":"Submit",
   
   "Password": "Password",
   "Confirm Password": "Confirm Password",
