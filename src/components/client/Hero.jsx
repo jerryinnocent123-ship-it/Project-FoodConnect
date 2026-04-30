@@ -6,14 +6,14 @@ import { useTranslation } from "react-i18next";
 
 function Hero() {
   const bgHero = "../../Public/hero-bg.jpg"
-  const bgVideo = "../../Public/videoplayback.mp4" 
+  const bgVideo = "/VId.mp4" 
   const navigate = useNavigate();
   const { t } = useTranslation()
 
   return (
     <>
       <div className="bg-hero" style={{
-        backgroundimage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)), url(${bgHero})`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)), url(${bgHero})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         height: '400px', display: 'flex',
@@ -22,7 +22,7 @@ function Hero() {
         alignItems: 'center', color: '#fff',
         position: 'relative',
         overflow: 'hidden'
-      }}>
+      }}/>
 
       
         <video
@@ -37,7 +37,7 @@ function Hero() {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            zIndex: -2
+            zIndex: 0
           }}
         >
           <source src={bgVideo} type="video/mp4" />
@@ -52,15 +52,19 @@ function Hero() {
           height: '100%',
           background: 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.7))',
           zIndex: -1
-        }} />
+        }} >  </div>
 
-        <h1 className="text-5xl font-bold tccext-center">{t('Delicious Food, Delivered To You')}</h1>
+      <div className="container mx-auto px-4 py-20 relative z-10">
+
+        <h1 className="text-5xl font-bold text-center">{t('Delicious Food, Delivered To You')}</h1>
         <p className="text-lg text-center">{t('Order your favorite meals from local restaurants in minutes.')}</p>
         <button onClick={() => navigate('/restaurant')}
           className="mt-5 px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white border-none rounded-md cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#A3080B] hover:shadow-lg active:scale-95">
           {t('Order Now')}
         </button>
       </div>
+        
+      
     </>
   )
 }
