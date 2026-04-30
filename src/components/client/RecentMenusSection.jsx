@@ -3,6 +3,7 @@ import { Clock3 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { fetchRecentMenus } from '../../services/menuService'
 import { useCart } from '../../context/CartContext'
+import MenuCardSkeleton from "../UI/skeleton"
 
 function RecentMenusSection() {
   const { t } = useTranslation()
@@ -51,7 +52,13 @@ function RecentMenusSection() {
         </div>
       </div>
 
-      {loading && <p className="text-slate-600">{t('Loading menus...')}</p>}
+     {loading && (
+  <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+    {Array.from({ length: 6 }).map((_, i) => (
+      <MenuCardSkeleton key={i} />
+    ))}
+  </div>
+)}
       {!loading && error && <p className="text-red-600">{error}</p>}
 
       {!loading && !error && menus.length === 0 && (
