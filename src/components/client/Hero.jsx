@@ -4,34 +4,64 @@
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next";
 
-
 function Hero() {
-  const bgHero = "../../Public/hero-bg.jpg" // chemen imaj la
+  const bgHero = "../../Public/hero-bg.jpg"
+  const bgVideo = "../../Public/videoplayback.mp4" 
   const navigate = useNavigate();
   const { t } = useTranslation()
 
   return (
     <>
       <div className="bg-hero" style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)), url(${bgHero})`,
+        backgroundimage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)), url(${bgHero})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         height: '400px', display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center', color: '#fff'
+        alignItems: 'center', color: '#fff',
+        position: 'relative',
+        overflow: 'hidden'
       }}>
 
-        <h1 className="text-5xl font-bold text-center">{t('Delicious Food, Delivered To You')}</h1>
+      
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            zIndex: -2
+          }}
+        >
+          <source src={bgVideo} type="video/mp4" />
+        </video>
+
+        
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.7))',
+          zIndex: -1
+        }} />
+
+        <h1 className="text-5xl font-bold tccext-center">{t('Delicious Food, Delivered To You')}</h1>
         <p className="text-lg text-center">{t('Order your favorite meals from local restaurants in minutes.')}</p>
         <button onClick={() => navigate('/restaurant')}
           className="mt-5 px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white border-none rounded-md cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#A3080B] hover:shadow-lg active:scale-95">
           {t('Order Now')}
         </button>
       </div>
-
     </>
-
   )
 }
 
