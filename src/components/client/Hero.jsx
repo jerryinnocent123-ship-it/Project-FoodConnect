@@ -57,17 +57,17 @@ function Hero() {
             <p className="text-lg text-white mt-4">
               {t('Order your favorite meals from local restaurants in minutes.')}
             </p>
-          </div>
-
-        
           <div className="p-6 flex justify-end">
             <button
               onClick={() => navigate('/restaurant')}
-              className="px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white rounded-full transition-all duration-300 ease-in-out hover:bg-[#A3080B] hover:shadow-lg active:scale-95"
+              className="px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white rounded-lg transition-all duration-300 ease-in-out hover:bg-[#A3080B] hover:shadow-lg active:scale-95"
             >
               {t('Order Now')}
             </button>
           </div>
+          </div>
+
+        
 
         </div>
 
