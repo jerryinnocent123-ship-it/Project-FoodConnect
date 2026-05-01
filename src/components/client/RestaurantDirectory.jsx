@@ -319,7 +319,7 @@ function RestaurantDirectory({ compact = false }) {
                         <div className="mb-2 flex items-start justify-between gap-3">
                           <h4 className="text-lg font-semibold text-white">{menu.title}</h4>
                           <span className="rounded-full bg-orange-500 px-3 py-1 text-sm font-semibold text-white">
-                            ${Number(menu.price || 0).toFixed(2)}
+                            HTG {Number(menu.price || 0).toFixed(2)}
                           </span>
                         </div>
                         <p className="text-sm leading-6 text-slate-200">{menu.description}</p>

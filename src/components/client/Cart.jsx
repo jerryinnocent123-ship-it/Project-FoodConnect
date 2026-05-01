@@ -94,7 +94,7 @@ function Cart() {
                     </div>
 
                     <p className="text-lg font-semibold text-slate-900">
-                      ${(Number(item.price || 0) * item.quantity).toFixed(2)}
+                      HTG {(Number(item.price || 0) * item.quantity).toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -113,7 +113,7 @@ function Cart() {
               </div>
               <div className="flex items-center justify-between border-t border-slate-800 pt-4 text-xl font-semibold text-white">
                 <span>{t('Total')}</span>
-                <span>${totalPrice.toFixed(2)}</span>
+                <span>HTG {totalPrice.toFixed(2)}</span>
               </div>
             </div>
 
