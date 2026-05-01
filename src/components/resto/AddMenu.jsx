@@ -211,7 +211,7 @@ function AddMenu() {
                       </p>
                     </div>
                     <span className="rounded-full bg-orange-500 px-3 py-1 text-sm font-semibold text-white">
-                      ${Number(form.price || 0).toFixed(2)}
+                      HTG {Number(form.price || 0).toFixed(2)}
                     </span>
                   </div>
                   <p className="text-sm leading-6 text-slate-200">

@@ -88,7 +88,7 @@ function RecentMenusSection() {
                     </p>
                   </div>
                   <span className="rounded-full bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700">
-                    ${Number(menu.price || 0).toFixed(2)}
+                    HTG {Number(menu.price || 0).toFixed(2)}
                   </span>
                 </div>
                 <p className="text-sm leading-6 text-slate-600">{menu.description}</p>
