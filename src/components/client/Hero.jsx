@@ -1,38 +1,60 @@
-// sa se hero component ki pral montre yon imaj ak yon mesaj akeyi itilizatè a sou paj dakèy la. 
-// Li kapab gen ladan tou yon bouton pou ankouraje itilizatè a pou li eksplore plis sou sit la
-//  oswa pou li enskri.
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-
 function Hero() {
-  const bgHero = "../../Public/hero-bg.jpg" // chemen imaj la
+  const bgHero = "../../Public/hero-bg.jpg";
+  const bgVideo = "/VId.mp4";
+
   const navigate = useNavigate();
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
-    <>
-      <div className="bg-hero" style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7)), url(${bgHero})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        height: '400px', display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center', color: '#fff'
-      }}>
+    <div className="relative h-[400px] flex items-center justify-center text-white overflow-hidden">
+      
+     
 
-        <h1 className="text-5xl font-bold text-center">{t('Delicious Food, Delivered To You')}</h1>
-        <p className="text-lg text-center">{t('Order your favorite meals from local restaurants in minutes.')}</p>
-        <button onClick={() => navigate('/restaurant')}
-          className="mt-5 px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white border-none rounded-md cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#A3080B] hover:shadow-lg active:scale-95">
-          {t('Order Now')}
+      
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src={bgVideo} type="video/mp4" />
+      </video>
+
+      
+      <div className="absolute inset-0 bg-black/60"></div>
+
+      
+      <div className="relative z-10 flex flex-col items-center text-center px-4">
+        
+        <h1 className="text-5xl font-bold">
+          {t('Delicious Food, Delivered To You')}
+        </h1>
+
+        <p className="text-lg mt-4">
+          {t('Order your favorite meals from local restaurants in minutes.')}
+        </p>
+
+          <button
+          onClick={() => navigate("/restaurant")}
+          className="mt-12 px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white rounded-lg hover:bg-[#A3080B] transition-all duration-300 active:scale-95"
+        >
+          {t("Order Now")}
         </button>
-      </div>
+           
+          </div>
+          </div>
 
-    </>
+        
 
-  )
+      
+
+     
+    
+  );
 }
 
-export default Hero
+export default Hero;

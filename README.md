@@ -1,4 +1,7 @@
 
+
+
+
 #  Project FoodConnect
 
 **FoodConnect** se yon aplikasyon web modèn ki pèmèt itilizatè jwenn, eksplore epi kominike ak restoran lokal fasilman. Li fèt pou amelyore koneksyon ant kliyan ak restoran atravè yon entèfas rapid, senp, epi entèaktif.
