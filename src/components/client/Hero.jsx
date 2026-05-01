@@ -11,13 +11,7 @@ function Hero() {
   return (
     <div className="relative h-[400px] flex items-center justify-center text-white overflow-hidden">
       
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url(${bgHero})`,
-        }}
-      ></div>
+     
 
       
       <video
@@ -46,29 +40,20 @@ function Hero() {
 
           <button
           onClick={() => navigate("/restaurant")}
-          className="mt-12 px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white rounded-none hover:bg-[#A3080B] transition-all duration-300 active:scale-95"
+          className="mt-12 px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white rounded-lg hover:bg-[#A3080B] transition-all duration-300 active:scale-95"
         >
           {t("Order Now")}
         </button>
-            <p className="text-lg text-white mt-4">
-              {t('Order your favorite meals from local restaurants in minutes.')}
-            </p>
-          <div className="p-6 flex justify-end">
-            <button
-              onClick={() => navigate('/restaurant')}
-              className="px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white rounded-lg transition-all duration-300 ease-in-out hover:bg-[#A3080B] hover:shadow-lg active:scale-95"
-            >
-              {t('Order Now')}
-            </button>
+           
           </div>
           </div>
 
         
 
-        </div>
+      
 
-      </div>
-    </div>
+     
+    
   );
 }
 
