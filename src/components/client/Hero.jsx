@@ -1,6 +1,3 @@
-// sa se hero component ki pral montre yon imaj ak yon mesaj akeyi itilizatè a sou paj dakèy la. 
-// Li kapab gen ladan tou yon bouton pou ankouraje itilizatè a pou li eksplore plis sou sit la
-//  oswa pou li enskri.
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next";
 
@@ -26,7 +23,7 @@ function Hero() {
         overflow: 'hidden'
       }}>
 
-        {/* VIDEO */}
+        
         <video
           autoPlay
           loop
@@ -45,13 +42,13 @@ function Hero() {
           <source src={bgVideo} type="video/mp4" />
         </video>
 
-        {/* OVERLAY */}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black/80 to-black/70 z-10"></div>
+        
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-black/50 to-black/40 z-10"></div>
 
-        {/* CONTENT */}
+        
         <div className="absolute inset-0 z-20 flex flex-col">
 
-          {/* TEXTE (un peu plus bas) */}
+        
           <div className="flex-1 flex flex-col justify-center items-center text-center px-4 mt-10">
             <h1 className="text-5xl font-bold text-white">
               {t('Delicious Food, Delivered To You')}
@@ -62,7 +59,7 @@ function Hero() {
             </p>
           </div>
 
-          {/* BOUTON BAS DROITE */}
+        
           <div className="p-6 flex justify-end">
             <button
               onClick={() => navigate('/restaurant')}
