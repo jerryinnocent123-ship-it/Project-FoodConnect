@@ -43,7 +43,7 @@ function SideBarResto() {
           })}
         </nav>
 
-        <LanguageSwitcher className="mt-6" />
+       
       </div>
     </aside>
   )
