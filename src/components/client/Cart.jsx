@@ -16,12 +16,18 @@ function Cart() {
     if (cartItems.length === 0) return
 
     const message =
-      paymentMethod === 'moncash'?
-         navigate('/Paiement')
+      paymentMethod === 'moncash' ?
+        navigate('/Paiement')
         : t('Cash on delivery selected. Please keep your phone available for delivery.')
 
     setCheckoutMessage(message)
-    clearCart()
+
+  }
+  const clear = () => {
+    if (cartItems.length === 0) return
+    else {
+      clearCart()
+    }
   }
 
   return (
@@ -36,6 +42,14 @@ function Cart() {
               {t('Cart')}
             </p>
             <h1 className="text-3xl font-bold text-slate-900">{t('Your Cart')}</h1>
+          </div>
+          <div className='border-none text-1xl p-3 m-3'>
+            <button
+              onClick={clear}
+              className='border-none text-1xl p-3 m-3 bg-transparent cursor-pointer transition-all duration-300 hover:text-orange-500 hover:underline'
+            >
+              {t('clear cart')}
+            </button>
           </div>
         </div>
 

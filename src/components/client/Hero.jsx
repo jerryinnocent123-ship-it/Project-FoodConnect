@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function Hero() {
-  const bgHero = "../../Public/hero-bg.jpg";
-  const bgVideo = "/VId.mp4";
+
+  const bgVideo = "/fondHero.mp4";
 
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ function Hero() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
       >
-        <source src={bgVideo} type="video/mp4" />
+        <source src={bgVideo} type="video/mp4"/>
       </video>
 
       
