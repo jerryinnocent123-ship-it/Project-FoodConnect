@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom';
 import { useEffect, useState } from 'react'
 import { LayoutGrid, LoaderCircle, LogOut } from 'lucide-react'
 import React from 'react'
@@ -71,6 +72,10 @@ function Dashboards() {
               <h1 className="text-3xl font-bold text-slate-900">{t('Restaurant Dashboard')}</h1>
               <p className="mt-2 text-slate-600">
                 {t('Manage your menus and review everything you have published.')}
+              </p>
+              <p>
+                <Link className='text-orange-600'
+                to={"/profile"}>{t('Go to your profile')}</Link>
               </p>
             </div>
 
