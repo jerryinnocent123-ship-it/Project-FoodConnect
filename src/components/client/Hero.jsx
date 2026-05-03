@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 function Hero() {
 
-  const bgVideo = "/fondHero.mp4";
+ 
   const bg = "/hero-bg.jpg"
 
   const navigate = useNavigate();
