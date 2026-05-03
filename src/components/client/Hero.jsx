@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 function Hero() {
 
   const bgVideo = "/fondHero.mp4";
+  const bg = "/hero-bg.jpg"
 
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -14,18 +15,13 @@ function Hero() {
      
 
       
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="metadata"
+      <img
+        src={bg}
+        alt="Background"
         className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src={bgVideo} type="video/mp4"/>
-      </video>
+      />
 
-      
+      {/* Kouch nwa pou fè tèks la vizib */}
       <div className="absolute inset-0 bg-black/60"></div>
 
       
