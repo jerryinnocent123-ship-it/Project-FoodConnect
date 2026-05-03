@@ -7,6 +7,12 @@
 
 **FoodConnect** est une application web moderne qui permet aux utilisateurs de trouver, explorer et interagir facilement avec des restaurants locaux. Elle est conçue pour améliorer la connexion entre les clients et les restaurants grâce à une interface rapide, simple et interactive.
 
+--
+
+Klike la pou li plis detay sou pwojè a :
+[Views file]( https://drive.google.com/file/d/1Hy0V5OwrNlMBdEoCkvQUFhv7Awn9rkEV/view?usp=sharing)
+--
+
 ---
 ## Fonctionnalités principales
 
