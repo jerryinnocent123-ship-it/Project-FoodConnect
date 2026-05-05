@@ -1,5 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import Alert from '@mui/material/Alert';
+
 
 const CartContext = createContext({})
 const STORAGE_KEY = 'foodconnect-cart'
@@ -12,7 +14,7 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([])
-
+  
   useEffect(() => {
     const storedCart = window.localStorage.getItem(STORAGE_KEY)
     if (!storedCart) return
@@ -40,9 +42,9 @@ export const CartProvider = ({ children }) => {
           item.id === menu.id ? { ...item, quantity: item.quantity + 1 } : item
         )
       }
-
       return [...current, { ...menu, quantity: 1 }]
     })
+   
   }
 
   const updateQuantity = (menuId, quantity) => {
