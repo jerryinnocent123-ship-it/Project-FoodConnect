@@ -3,8 +3,9 @@ import { useTranslation } from "react-i18next";
 
 function Hero() {
 
- 
-  const bg = "/hero-bg.jpg"
+// imaj la konn pa vle moute
+// sil pa moute chanje pa her-bg.jpg or salade.jpg
+  const bg = "/fond.jpg"
 
   const navigate = useNavigate();
   const { t } = useTranslation();
