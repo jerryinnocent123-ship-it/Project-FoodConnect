@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import Alert from '@mui/material/Alert';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const CartContext = createContext({})
@@ -44,6 +45,7 @@ export const CartProvider = ({ children }) => {
       }
       return [...current, { ...menu, quantity: 1 }]
     })
+     toast.success("Produit ajouté au panier ")
    
   }
 
@@ -77,6 +79,7 @@ export const CartProvider = ({ children }) => {
   }, [cartItems])
 
   return (
+   
     <CartContext.Provider
       value={{
         cartItems,
@@ -89,6 +92,8 @@ export const CartProvider = ({ children }) => {
       }}
     >
       {children}
+      <ToastContainer />
     </CartContext.Provider>
+     
   )
 }

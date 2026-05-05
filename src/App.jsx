@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 
+import ScrollToTop from './components/UI/ScrollToTop' 
 // Client
 import Home from './pages/client/Home'
 import About from './pages/client/About'
@@ -28,7 +29,8 @@ import { ProtectedRoute } from './context/ProtectedRoute'
 // function app
 function App() {
   return (
-    
+    <>
+    <ScrollToTop />
     <Routes>
       {/* Client */}
       <Route path="/" element={<Home />} />
@@ -52,6 +54,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<Register />} />
     </Routes>
+    </>
   )
 }
 
