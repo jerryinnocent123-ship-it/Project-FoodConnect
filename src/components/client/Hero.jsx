@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 function Hero() {
   const bgHero = "../../Public/hero-bg.jpg";
-  const bgVideo = "/VId.mp4";
+  const bgVideo = "/vid.mp4";
 
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -11,16 +11,16 @@ function Hero() {
   return (
     <div className="relative h-[400px] flex items-center justify-center text-white overflow-hidden">
       
-      {/* Background Image */}
+      
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center  brightness-210"
         style={{
-          backgroundImage: `url(${bgHero})`,
+          backgroundImage: `url(https://shorturl.fm/jMDWT)`,
         }}
       ></div>
 
       
-      <video
+       <video
         autoPlay
         loop
         muted
