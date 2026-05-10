@@ -1,10 +1,22 @@
 import { supabase } from '../../lib/supabase'
 
+let restaurantsCache = null
+let restaurantsRequest = null
+
+const menusCacheByRestaurant = new Map()
+const menuRequestsByRestaurant = new Map()
+const createMenuRequests = new Map()
+
 const sanitizeFileName = (fileName) =>
   fileName
     .toLowerCase()
     .replace(/[^a-z0-9.-]/g, '-')
     .replace(/-+/g, '-')
+
+const normalizeMenuTitle = (title = '') => title.trim().replace(/\s+/g, ' ')
+
+const buildDuplicateMenuError = (title) =>
+  new Error(`A menu named "${title}" already exists for this restaurant.`)
 
 export async function fetchRestaurantByOwner(ownerId) {
   const { data, error } = await supabase
@@ -12,7 +24,7 @@ export async function fetchRestaurantByOwner(ownerId) {
     .select('id, name, owner_id, zone, lat, lng, created_at')
     .eq('owner_id', ownerId)
     .limit(1)
-    .single()
+    .maybeSingle()
 
   if (error) {
     throw error
@@ -25,9 +37,29 @@ export async function fetchRestaurantByOwner(ownerId) {
   return data
 }
 
-export async function uploadMenuImage({ file, restaurantId }) {
+async function findExistingMenuByTitle({ restaurantId, title }) {
+  const normalizedTitle = normalizeMenuTitle(title)
+
+  const { data, error } = await supabase
+    .from('menus')
+    .select('id, title, restaurant_id')
+    .eq('restaurant_id', restaurantId)
+    .ilike('title', normalizedTitle)
+
+  if (error) {
+    throw error
+  }
+
+  return (
+    (data || []).find(
+      (menu) => normalizeMenuTitle(menu.title).toLowerCase() === normalizedTitle.toLowerCase()
+    ) || null
+  )
+}
+
+export async function uploadMenuImage({ file, ownerId }) {
   const safeName = sanitizeFileName(file.name || 'menu-image')
-  const filePath = `${restaurantId}/${Date.now()}-${safeName}`
+  const filePath = `${ownerId}/${Date.now()}-${safeName}`
 
   const { error: uploadError } = await supabase.storage
     .from('images-menu')
@@ -52,29 +84,84 @@ export async function createMenu({
   imageFile,
   ownerId,
 }) {
-  const restaurant = await fetchRestaurantByOwner(ownerId)
-  const imageUrl = await uploadMenuImage({ file: imageFile, restaurantId: restaurant.id })
+  const normalizedTitle = normalizeMenuTitle(title)
+  const requestKey = `${ownerId}:${normalizedTitle.toLowerCase()}`
 
-  const payload = {
-    title: title.trim(),
-    description: description.trim(),
-    price: Number(price),
-    image_url: imageUrl,
-    restaurant_id: restaurant.id,
-    restaurant_name: restaurant.name,
+  if (createMenuRequests.has(requestKey)) {
+    return createMenuRequests.get(requestKey)
   }
 
-  const { data, error } = await supabase
-    .from('menus')
-    .insert([payload])
-    .select()
-    .single()
+  const request = (async () => {
+    const restaurant = await fetchRestaurantByOwner(ownerId)
 
-  if (error) {
-    throw error
+    if (!restaurant?.id) {
+      throw new Error('No valid restaurant was found for this account.')
+    }
+
+    const existingMenu = await findExistingMenuByTitle({
+      restaurantId: restaurant.id,
+      title: normalizedTitle,
+    })
+
+    if (existingMenu) {
+      throw buildDuplicateMenuError(normalizedTitle)
+    }
+
+    if (!imageFile) {
+      throw new Error('A menu image is required.')
+    }
+
+    const imageUrl = await uploadMenuImage({ file: imageFile, ownerId })
+
+    const payload = {
+      title: normalizedTitle,
+      description: description.trim(),
+      price: Number(price),
+      image_url: imageUrl,
+      restaurant_id: restaurant.id,
+      restaurant_name: restaurant.name,
+    }
+
+    if (!payload.title || !payload.description || Number.isNaN(payload.price)) {
+      throw new Error('Invalid menu payload.')
+    }
+
+    if (!payload.restaurant_id) {
+      throw new Error('Invalid restaurant_id for menu creation.')
+    }
+
+    const { error } = await supabase.from('menus').insert([payload])
+
+    if (error) {
+      throw error
+    }
+
+    const cachedMenus = menusCacheByRestaurant.get(restaurant.id)
+    if (cachedMenus) {
+      menusCacheByRestaurant.set(restaurant.id, [payload, ...cachedMenus])
+    }
+
+    if (restaurantsCache) {
+      restaurantsCache = restaurantsCache.map((restaurantItem) =>
+        restaurantItem.id === restaurant.id
+          ? {
+              ...restaurantItem,
+              dishes: [...(restaurantItem.dishes || []), normalizedTitle],
+            }
+          : restaurantItem
+      )
+    }
+
+    return payload
+  })()
+
+  createMenuRequests.set(requestKey, request)
+
+  try {
+    return await request
+  } finally {
+    createMenuRequests.delete(requestKey)
   }
-
-  return data
 }
 
 export async function fetchRecentMenus(limit = 6) {
@@ -92,17 +179,37 @@ export async function fetchRecentMenus(limit = 6) {
 }
 
 export async function fetchMenusByRestaurant(restaurantId) {
-  const { data, error } = await supabase
-    .from('menus')
-    .select('*')
-    .eq('restaurant_id', restaurantId)
-    .order('created_at', { ascending: false })
-
-  if (error) {
-    throw error
+  if (menusCacheByRestaurant.has(restaurantId)) {
+    return menusCacheByRestaurant.get(restaurantId)
   }
 
-  return data || []
+  if (menuRequestsByRestaurant.has(restaurantId)) {
+    return menuRequestsByRestaurant.get(restaurantId)
+  }
+
+  const request = (async () => {
+    const { data, error } = await supabase
+      .from('menus')
+      .select('*')
+      .eq('restaurant_id', restaurantId)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      throw error
+    }
+
+    const menus = data || []
+    menusCacheByRestaurant.set(restaurantId, menus)
+    return menus
+  })()
+
+  menuRequestsByRestaurant.set(restaurantId, request)
+
+  try {
+    return await request
+  } finally {
+    menuRequestsByRestaurant.delete(restaurantId)
+  }
 }
 
 export async function fetchMenusByOwner(ownerId) {
@@ -111,61 +218,80 @@ export async function fetchMenusByOwner(ownerId) {
 }
 
 export async function fetchRestaurants() {
-  const { data, error } = await supabase
-    .from('restaurants')
-    .select('id, name, owner_id, zone, lat, lng, created_at')
-    .order('name', { ascending: true })
-
-  if (error) {
-    throw error
+  if (restaurantsCache) {
+    return restaurantsCache
   }
 
-  const restaurants = data || []
-  const ownerIds = restaurants.map((restaurant) => restaurant.owner_id).filter(Boolean)
+  if (restaurantsRequest) {
+    return restaurantsRequest
+  }
 
-  let profiles = []
-  if (ownerIds.length > 0) {
-    const { data: profileData, error: profileError } = await supabase
-      .from('profile')
-      .select('id, adresse, full_name')
-      .in('id', ownerIds)
+  restaurantsRequest = (async () => {
+    const { data, error } = await supabase
+      .from('restaurants')
+      .select('id, name, owner_id, zone, lat, lng, created_at')
+      .eq('verified', true)
+      .order('name', { ascending: true })
 
-    if (profileError) {
-      throw profileError
+    if (error) {
+      throw error
     }
 
-    profiles = profileData || []
-  }
+    const restaurants = data || []
+    const ownerIds = restaurants.map((restaurant) => restaurant.owner_id).filter(Boolean)
 
-  const { data: menusData, error: menusError } = await supabase
-    .from('menus')
-    .select('id, title, restaurant_id')
+    let profiles = []
+    if (ownerIds.length > 0) {
+      const { data: profileData, error: profileError } = await supabase
+        .from('profile')
+        .select('id, adresse, full_name')
+        .in('id', ownerIds)
 
-  if (menusError) {
-    throw menusError
-  }
+      if (profileError) {
+        throw profileError
+      }
 
-  const profileById = new Map(profiles.map((profile) => [profile.id, profile]))
-  const menusByRestaurant = new Map()
-
-  for (const menu of menusData || []) {
-    const currentMenus = menusByRestaurant.get(menu.restaurant_id) || []
-    currentMenus.push(menu.title)
-    menusByRestaurant.set(menu.restaurant_id, currentMenus)
-  }
-
-  return restaurants.map((restaurant) => {
-    const profile = profileById.get(restaurant.owner_id)
-    const address = profile?.adresse || ''
-    const zone = restaurant.zone || address.split(',')[0]?.trim() || ''
-
-    return {
-      ...restaurant,
-      adresse: address,
-      zone,
-      lat: restaurant.lat || null,
-      lng: restaurant.lng || null,
-      dishes: menusByRestaurant.get(restaurant.id) || [],
+      profiles = profileData || []
     }
-  })
+
+    const { data: menusData, error: menusError } = await supabase
+      .from('menus')
+      .select('id, title, restaurant_id')
+
+    if (menusError) {
+      throw menusError
+    }
+
+    const profileById = new Map(profiles.map((profile) => [profile.id, profile]))
+    const menusByRestaurant = new Map()
+
+    for (const menu of menusData || []) {
+      const currentMenus = menusByRestaurant.get(menu.restaurant_id) || []
+      currentMenus.push(menu.title)
+      menusByRestaurant.set(menu.restaurant_id, currentMenus)
+    }
+
+    restaurantsCache = restaurants.map((restaurant) => {
+      const profile = profileById.get(restaurant.owner_id)
+      const address = profile?.adresse || ''
+      const zone = restaurant.zone || address.split(',')[0]?.trim() || ''
+
+      return {
+        ...restaurant,
+        adresse: address,
+        zone,
+        lat: restaurant.lat || null,
+        lng: restaurant.lng || null,
+        dishes: menusByRestaurant.get(restaurant.id) || [],
+      }
+    })
+
+    return restaurantsCache
+  })()
+
+  try {
+    return await restaurantsRequest
+  } finally {
+    restaurantsRequest = null
+  }
 }

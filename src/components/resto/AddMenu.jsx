@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { ImagePlus, LoaderCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../context/AuthContext'
@@ -21,6 +21,7 @@ function AddMenu() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
+  const submitLockRef = useRef(false)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -43,6 +44,11 @@ function AddMenu() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+
+    if (isSubmitting || submitLockRef.current) {
+      return
+    }
+
     setErrorMessage('')
     setSuccessMessage('')
 
@@ -58,6 +64,7 @@ function AddMenu() {
 
     try {
       setIsSubmitting(true)
+      submitLockRef.current = true
 
       await createMenu({
         title: form.title,
@@ -75,6 +82,7 @@ function AddMenu() {
       console.error('Error creating menu:', submitError)
       setErrorMessage(submitError.message || t('Unable to save this menu right now.'))
     } finally {
+      submitLockRef.current = false
       setIsSubmitting(false)
     }
   }
@@ -111,7 +119,8 @@ function AddMenu() {
                     value={form.title}
                     onChange={handleChange}
                     placeholder={t('Enter the menu title')}
-                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-orange-400"
+                    disabled={isSubmitting}
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-orange-400 disabled:bg-slate-100"
                   />
                 </div>
 
@@ -125,7 +134,8 @@ function AddMenu() {
                     onChange={handleChange}
                     rows="5"
                     placeholder={t('Describe the menu item')}
-                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-orange-400"
+                    disabled={isSubmitting}
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-orange-400 disabled:bg-slate-100"
                   />
                 </div>
 
@@ -141,7 +151,8 @@ function AddMenu() {
                     value={form.price}
                     onChange={handleChange}
                     placeholder="12.99"
-                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-orange-400"
+                    disabled={isSubmitting}
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-orange-400 disabled:bg-slate-100"
                   />
                 </div>
 
@@ -156,6 +167,7 @@ function AddMenu() {
                       type="file"
                       accept="image/*"
                       onChange={handleImageChange}
+                      disabled={isSubmitting}
                       className="hidden"
                     />
                   </label>

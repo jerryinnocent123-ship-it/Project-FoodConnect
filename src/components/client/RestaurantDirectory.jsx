@@ -43,6 +43,7 @@ function RestaurantDirectory({ compact = false }) {
         const data = await fetchRestaurants()
         if (!isMounted) return
 
+        setError('')
         setRestaurants(data)
         setSelectedRestaurant(data[0] || null)
       } catch (loadError) {
@@ -76,6 +77,7 @@ function RestaurantDirectory({ compact = false }) {
         setLoadingMenus(true)
         const data = await fetchMenusByRestaurant(selectedRestaurant.id)
         if (!isMounted) return
+        setError('')
         setMenus(data)
       } catch (loadError) {
         if (!isMounted) return

@@ -13,6 +13,58 @@ export const buildDefaultUsername = (value = '') =>
     .replace(/[^a-z0-9]+/g, '_')
     .replace(/^_+|_+$/g, '') || 'user'
 
+const isDuplicateKeyError = (error) => error?.code === '23505'
+
+const buildRestaurantAlreadyExistsError = () =>
+  new Error('A restaurant profile already exists for this account.')
+
+async function ensureRestaurantForOwner({ userId, full_name, adresse }) {
+  const zone = adresse.split(',')[0]?.trim() || null
+
+  const { data: existingRestaurant, error: existingRestaurantError } = await supabase
+    .from('restaurants')
+    .select('id')
+    .eq('owner_id', userId)
+    .maybeSingle()
+
+  if (existingRestaurantError) {
+    throw existingRestaurantError
+  }
+
+  if (existingRestaurant) {
+    const { error: updateRestaurantError } = await supabase
+      .from('restaurants')
+      .update({ name: full_name, zone })
+      .eq('id', existingRestaurant.id)
+
+    if (updateRestaurantError) {
+      throw updateRestaurantError
+    }
+
+    return existingRestaurant
+  }
+
+  const { data: insertedRestaurant, error: insertRestaurantError } = await supabase
+    .from('restaurants')
+    .insert({
+      name: full_name,
+      owner_id: userId,
+      zone,
+    })
+    .select('id')
+    .maybeSingle()
+
+  if (insertRestaurantError) {
+    if (isDuplicateKeyError(insertRestaurantError)) {
+      throw buildRestaurantAlreadyExistsError()
+    }
+
+    throw insertRestaurantError
+  }
+
+  return insertedRestaurant
+}
+
 export async function fetchProfileById(userId, email = '') {
   const { data, error } = await supabase
     .from('profile')
@@ -90,38 +142,11 @@ export async function saveProfile({
   }
 
   if (role === 'restaurant') {
-    const { data: restaurantRow, error: restaurantError } = await supabase
-      .from('restaurants')
-      .select('id')
-      .eq('owner_id', userId)
-      .maybeSingle()
-
-    if (restaurantError) {
-      throw restaurantError
-    }
-
-    if (restaurantRow) {
-      const { error: updateRestaurantError } = await supabase
-        .from('restaurants')
-        .update({ name: payload.full_name })
-        .eq('id', restaurantRow.id)
-
-      if (updateRestaurantError) {
-        throw updateRestaurantError
-      }
-    } else {
-      const { error: insertRestaurantError } = await supabase
-        .from('restaurants')
-        .insert({
-          name: payload.full_name,
-          owner_id: userId,
-          zone: payload.adresse.split(',')[0]?.trim() || null,
-        })
-
-      if (insertRestaurantError) {
-        throw insertRestaurantError
-      }
-    }
+    await ensureRestaurantForOwner({
+      userId,
+      full_name: payload.full_name,
+      adresse: payload.adresse,
+    })
   }
 
   return data

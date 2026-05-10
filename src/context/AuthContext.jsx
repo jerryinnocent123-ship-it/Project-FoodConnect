@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import { buildDefaultUsername } from '../services/profileService'
 
@@ -12,6 +12,20 @@ const normalizeRole = (role) => {
   if (normalized === 'admin') return 'admin'
   if (normalized === 'restaurant') return 'restaurant'
   return 'client'
+}
+
+const isDuplicateKeyError = (error) => error?.code === '23505'
+
+const buildFriendlyAuthError = (error) => {
+  if (isDuplicateKeyError(error)) {
+    return new Error('A restaurant profile already exists for this account.')
+  }
+
+  if (error instanceof Error) {
+    return error
+  }
+
+  return new Error('Unable to create your account right now.')
 }
 
 const buildUserWithRole = async (authUser) => {
@@ -60,6 +74,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const signUpRequestRef = useRef(null)
 
   const refreshUser = async () => {
     const {
@@ -127,65 +142,100 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   const signUp = async (email, password, full_name, tel, adresse, role) => {
-    try {
-      const normalizedRole = normalizeRole(role)
+    if (signUpRequestRef.current) {
+      return signUpRequestRef.current
+    }
 
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { full_name, tel, adresse, role: normalizedRole },
-        },
-      })
+    signUpRequestRef.current = (async () => {
+      try {
+        const normalizedRole = normalizeRole(role)
+        const normalizedEmail = email.trim().toLowerCase()
+        const normalizedFullName = full_name.trim()
+        const normalizedTel = tel.trim()
+        const normalizedAdresse = adresse.trim()
 
-      if (authError) throw authError
-
-      const authUser = authData?.user
-      if (!authUser) {
-        throw new Error('Account created without a user session.')
-      }
-
-      const profilePayload = {
-        id: authUser.id,
-        full_name,
-        username: buildDefaultUsername(full_name || email.split('@')[0]),
-        email,
-        tel,
-        adresse,
-        images_url: null,
-        role: normalizedRole,
-      }
-
-      const { error: profileError } = await supabase
-        .from('profile')
-        .upsert([profilePayload], { onConflict: 'id' })
-
-      if (profileError) {
-        await supabase.auth.signOut()
-        throw profileError
-      }
-
-      if (normalizedRole === 'restaurant') {
-        const { error: restaurantError } = await supabase.from('restaurants').insert({
-          name: full_name,
-          owner_id: authUser.id,
-          zone: adresse.split(',')[0]?.trim() || null,
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+          email: normalizedEmail,
+          password,
+          options: {
+            data: {
+              full_name: normalizedFullName,
+              tel: normalizedTel,
+              adresse: normalizedAdresse,
+              role: normalizedRole,
+            },
+          },
         })
 
-        if (restaurantError) {
-          await supabase.auth.signOut()
-          throw restaurantError
+        if (authError) throw authError
+
+        const authUser = authData?.user
+        if (!authUser) {
+          throw new Error('Account created without a user session.')
         }
+
+        const profilePayload = {
+          id: authUser.id,
+          full_name: normalizedFullName,
+          username: buildDefaultUsername(normalizedFullName || normalizedEmail.split('@')[0]),
+          email: normalizedEmail,
+          tel: normalizedTel,
+          adresse: normalizedAdresse,
+          images_url: null,
+          role: normalizedRole,
+        }
+
+        const { error: profileError } = await supabase
+          .from('profile')
+          .upsert([profilePayload], { onConflict: 'id' })
+
+        if (profileError) {
+          await supabase.auth.signOut()
+          throw profileError
+        }
+
+        if (normalizedRole === 'restaurant') {
+          const { data: existingRestaurant, error: existingRestaurantError } = await supabase
+            .from('restaurants')
+            .select('id')
+            .eq('owner_id', authUser.id)
+            .maybeSingle()
+
+          if (existingRestaurantError) {
+            await supabase.auth.signOut()
+            throw existingRestaurantError
+          }
+
+          if (!existingRestaurant) {
+            const { error: restaurantError } = await supabase.from('restaurants').insert({
+              name: normalizedFullName,
+              owner_id: authUser.id,
+              zone: normalizedAdresse.split(',')[0]?.trim() || null,
+              status: 'pending',
+              verified: false,
+            })
+
+            if (restaurantError && !isDuplicateKeyError(restaurantError)) {
+              await supabase.auth.signOut()
+              throw restaurantError
+            }
+          }
+        }
+
+        const userWithRole = { ...authUser, role: normalizedRole, profile: profilePayload }
+        setUser(userWithRole)
+
+        return { data: userWithRole, error: null }
+      } catch (error) {
+        const friendlyError = buildFriendlyAuthError(error)
+        console.error('Sign up error:', friendlyError)
+        return { data: null, error: friendlyError }
+      } finally {
+        signUpRequestRef.current = null
       }
+    })()
 
-      const userWithRole = { ...authUser, role: normalizedRole, profile: profilePayload }
-      setUser(userWithRole)
-
-      return { data: userWithRole, error: null }
-    } catch (error) {
-      console.error('Sign up error:', error)
-      return { data: null, error }
-    }
+    return signUpRequestRef.current
   }
 
   const signIn = async (email, password) => {

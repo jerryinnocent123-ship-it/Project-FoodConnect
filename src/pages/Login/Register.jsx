@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useTranslation } from "react-i18next";
@@ -13,6 +13,7 @@ const Register = () => {
 
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const submitLockRef = useRef(false)
 
   const { signUp } = useAuth()
   const navigate = useNavigate()
@@ -22,6 +23,11 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (loading || submitLockRef.current) {
+      return
+    }
+
     setError('')
 
     //  Validation password match
@@ -31,6 +37,7 @@ const Register = () => {
     }
 
     setLoading(true)
+    submitLockRef.current = true
 
     try {
       const { error } = await signUp(
@@ -49,6 +56,7 @@ const Register = () => {
     } catch (err) {
       setError(err.message)
     } finally {
+      submitLockRef.current = false
       setLoading(false)
     }
   }
@@ -59,9 +67,9 @@ const Register = () => {
         <h2 className="text-2xl font-bold text-center">{t('Register')}</h2>
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-3">
-          <input name="full_name" placeholder={t('Full name')} onChange={handleChange} required className="w-full border p-2 rounded" />
+          <input name="full_name" placeholder={t('Full name')} onChange={handleChange} required disabled={loading} className="w-full border p-2 rounded disabled:bg-gray-100" />
 
-          <input name="email" type="email" placeholder={t('Email')} onChange={handleChange} required className="w-full border p-2 rounded" />
+          <input name="email" type="email" placeholder={t('Email')} onChange={handleChange} required disabled={loading} className="w-full border p-2 rounded disabled:bg-gray-100" />
 
           {/*  Password */}
           <div className="relative">
@@ -71,7 +79,8 @@ const Register = () => {
               placeholder={t('Password')}
               onChange={handleChange}
               required
-              className="w-full border p-2 rounded"
+              disabled={loading}
+              className="w-full border p-2 rounded disabled:bg-gray-100"
             />
             <button
               type="button"
@@ -90,7 +99,8 @@ const Register = () => {
               placeholder={t('Confirm Password')}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full border p-2 rounded"
+              disabled={loading}
+              className="w-full border p-2 rounded disabled:bg-gray-100"
             />
             <button
               type="button"
@@ -108,18 +118,18 @@ const Register = () => {
             </p>
           )}
 
-          <input name="tel" placeholder={t('Phone')} onChange={handleChange} required className="w-full border p-2 rounded" />
+          <input name="tel" placeholder={t('Phone')} onChange={handleChange} required disabled={loading} className="w-full border p-2 rounded disabled:bg-gray-100" />
 
-          <input name="adresse" placeholder={t('Address')} onChange={handleChange} required className="w-full border p-2 rounded" />
+          <input name="adresse" placeholder={t('Address')} onChange={handleChange} required disabled={loading} className="w-full border p-2 rounded disabled:bg-gray-100" />
 
-          <select name="role" onChange={handleChange} className="w-full border p-2 rounded">
+          <select name="role" onChange={handleChange} disabled={loading} className="w-full border p-2 rounded disabled:bg-gray-100">
             <option value="client">Client</option>
             <option value="restaurant">Restaurant</option>
           </select>
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          <button type="submit" disabled={loading} className="w-full bg-blue-600 text-white py-2 rounded">
+          <button type="submit" disabled={loading} className="w-full bg-blue-600 text-white py-2 rounded disabled:bg-blue-400 disabled:cursor-not-allowed">
             {loading ? t('Creating...') : t('Signup')}
           </button>
         </form>
