@@ -13,9 +13,9 @@ function Hero() {
       
       
       <div
-        className="absolute inset-0 bg-cover bg-center  brightness-210"
+        className="absolute inset-0 bg-cover bg-center  brightness-300"
         style={{
-          backgroundImage: `url(https://shorturl.fm/jMDWT)`,
+          backgroundImage: `url(https://shorturl.fm/ad2p7)`,
         }}
       ></div>
 
