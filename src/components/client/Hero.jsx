@@ -19,16 +19,7 @@ function Hero() {
         }}
       ></div>
 
-      
-       <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src={bgVideo} type="video/mp4" />
-      </video>
+    
 
       
       <div className="absolute inset-0 bg-black/60"></div>
