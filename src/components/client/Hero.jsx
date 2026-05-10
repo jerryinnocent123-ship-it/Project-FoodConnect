@@ -46,13 +46,20 @@ function Hero() {
 
           <button
           onClick={() => navigate("/restaurant")}
-          className="mt-12 px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white rounded-none hover:bg-[#A3080B] transition-all duration-300 active:scale-95"
+          className="mt-12 px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white rounded-lg hover:bg-[#A3080B] transition-all duration-300 active:scale-95"
         >
           {t("Order Now")}
         </button>
+           
+          </div>
+          </div>
 
-      </div>
-    </div>
+        
+
+      
+
+     
+    
   );
 }
 

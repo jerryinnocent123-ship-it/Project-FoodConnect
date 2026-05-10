@@ -81,7 +81,7 @@ export default function About() {
           </p>
           <div>
             <Link to="/signup">
-              <button className="bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 hover:scale-105 transition duration-300 shadow-md">
+              <button className="px-8 py-4 text-2xl font-bold bg-[#D80B0F] text-white rounded-lg transition-all duration-300 ease-in-out hover:bg-[#A3080B] hover:shadow-lg active:scale-95">
                 {t("Join")}
               </button>
             </Link>
