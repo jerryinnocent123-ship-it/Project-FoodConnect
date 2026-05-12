@@ -75,7 +75,7 @@ function RestaurantDirectory({ compact = false }) {
     const loadMenus = async () => {
       try {
         setLoadingMenus(true)
-        const data = await fetchMenusByRestaurant(selectedRestaurant.id)
+        const data = await fetchMenusByRestaurant(selectedRestaurant.id, { publicOnly: true })
         if (!isMounted) return
         setError('')
         setMenus(data)

@@ -32,6 +32,8 @@
   "Footer note": "Stay connected with us for updates and offers.",
   "Footer copyright": "© 2026 FoodConnect. All rights reserved.",
   "clear cart":"clear cart",
+  "Back to Home":"Back to Home",
+  "No account?": "No account?",
 
   "Manage Your Profile": "Manage Your Profile",
   "Loading profile...": "Loading profile...",
@@ -155,6 +157,20 @@
   "Menu added successfully.": "Menu added successfully.",
   "Unable to save this menu right now.": "Unable to save this menu right now.",
   "Unable to load admin dashboard right now.": "Unable to load admin dashboard right now.",
+  "Approve": "Approve",
+  "Approving...": "Approving...",
+  "Reject": "Reject",
+  "Rejecting...": "Rejecting...",
+  "Suspend": "Suspend",
+  "Suspending...": "Suspending...",
+  "Delete": "Delete",
+  "Deleting...": "Deleting...",
+  "Pending": "Pending",
+  "Restaurant approved successfully.": "Restaurant approved successfully.",
+  "Restaurant rejected successfully.": "Restaurant rejected successfully.",
+  "Restaurant suspended successfully.": "Restaurant suspended successfully.",
+  "Restaurant deleted successfully.": "Restaurant deleted successfully.",
+  "Unable to update restaurant status right now.": "Unable to update restaurant status right now.",
   "Language":"Language"
  
   

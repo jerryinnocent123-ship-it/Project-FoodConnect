@@ -26,6 +26,8 @@
   "Cash on delivery selected. Please keep your phone available for delivery.": "Ou chwazi peye lè livrezon. Kenbe telefòn ou disponib.",
   "Proceed to Payment": "Kontinye peye",
   "Go to your profile":"Wè profil ou",
+  "Back to Home":"Retounen nan paj akèy",
+  "No account?": "Pa gen kont?",
 
   "Footer description": "Nou konekte ou ak pi bon restoran lokal yo fasil.",
   "Quick Links": "Lyen rapid",
@@ -157,6 +159,20 @@
   "Please complete all fields before saving the menu.": "Tanpri ranpli tout bwat yo anvan ou sove meni an.",
   "Menu added successfully.": "Meni an ajoute ak siksè.",
   "Unable to save this menu right now.": "Nou pa ka sove meni sa a kounye a.",
-  "Unable to load admin dashboard right now.": "Dachbod admin lan pa ka chaje kounye a."
+  "Unable to load admin dashboard right now.": "Dachbod admin lan pa ka chaje kounye a.",
+  "Approve": "Apwouve",
+  "Approving...": "Ap apwouve...",
+  "Reject": "Rejte",
+  "Rejecting...": "Ap rejte...",
+  "Suspend": "Sispann",
+  "Suspending...": "Ap sispann...",
+  "Delete": "Efase",
+  "Deleting...": "Ap efase...",
+  "Pending": "An atant",
+  "Restaurant approved successfully.": "Restoran an apwouve ak siksè.",
+  "Restaurant rejected successfully.": "Restoran an rejte ak siksè.",
+  "Restaurant suspended successfully.": "Restoran an sispann ak siksè.",
+  "Restaurant deleted successfully.": "Restoran an efase ak siksè.",
+  "Unable to update restaurant status right now.": "Nou pa ka mete estati restoran an ajou kounye a."
  
 }

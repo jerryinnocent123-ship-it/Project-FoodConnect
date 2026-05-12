@@ -18,6 +18,8 @@ const normalizeMenuTitle = (title = '') => title.trim().replace(/\s+/g, ' ')
 const buildDuplicateMenuError = (title) =>
   new Error(`A menu named "${title}" already exists for this restaurant.`)
 
+const APPROVED_RESTAURANT_FILTER = 'status.eq.approved,and(status.is.null,verified.eq.true)'
+
 export async function fetchRestaurantByOwner(ownerId) {
   const { data, error } = await supabase
     .from('restaurants')
@@ -165,9 +167,25 @@ export async function createMenu({
 }
 
 export async function fetchRecentMenus(limit = 6) {
+  const { data: approvedRestaurants, error: restaurantError } = await supabase
+    .from('restaurants')
+    .select('id')
+    .or(APPROVED_RESTAURANT_FILTER)
+
+  if (restaurantError) {
+    throw restaurantError
+  }
+
+  const approvedRestaurantIds = (approvedRestaurants || []).map((restaurant) => restaurant.id)
+
+  if (approvedRestaurantIds.length === 0) {
+    return []
+  }
+
   const { data, error } = await supabase
     .from('menus')
     .select('*')
+    .in('restaurant_id', approvedRestaurantIds)
     .order('created_at', { ascending: false })
     .limit(limit)
 
@@ -178,7 +196,9 @@ export async function fetchRecentMenus(limit = 6) {
   return data || []
 }
 
-export async function fetchMenusByRestaurant(restaurantId) {
+export async function fetchMenusByRestaurant(restaurantId, options = {}) {
+  const { publicOnly = false } = options
+
   if (menusCacheByRestaurant.has(restaurantId)) {
     return menusCacheByRestaurant.get(restaurantId)
   }
@@ -188,6 +208,23 @@ export async function fetchMenusByRestaurant(restaurantId) {
   }
 
   const request = (async () => {
+    if (publicOnly) {
+      const { data: restaurant, error: restaurantError } = await supabase
+        .from('restaurants')
+        .select('id')
+        .eq('id', restaurantId)
+        .or(APPROVED_RESTAURANT_FILTER)
+        .maybeSingle()
+
+      if (restaurantError) {
+        throw restaurantError
+      }
+
+      if (!restaurant) {
+        return []
+      }
+    }
+
     const { data, error } = await supabase
       .from('menus')
       .select('*')
@@ -230,7 +267,7 @@ export async function fetchRestaurants() {
     const { data, error } = await supabase
       .from('restaurants')
       .select('id, name, owner_id, zone, lat, lng, created_at')
-      .eq('verified', true)
+      .or(APPROVED_RESTAURANT_FILTER)
       .order('name', { ascending: true })
 
     if (error) {

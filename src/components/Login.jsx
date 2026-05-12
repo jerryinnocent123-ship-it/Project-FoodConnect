@@ -77,6 +77,8 @@ const { t } = useTranslation();
         <p className="mt-4 text-center">
           {t('No account?')} <Link to="/signup" className="text-blue-600">{t('Signup')}</Link>
         </p>
+        <p className="mt-2 text-center"
+        ><Link to="/" className="text-blue-600">{t('Back to Home')}</Link></p>
       </div>
     </div>
   )

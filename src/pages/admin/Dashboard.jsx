@@ -2,9 +2,24 @@ import { useEffect, useState } from 'react'
 import { Building2, MenuSquare, ShieldCheck, Users } from 'lucide-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 import LanguageSwitcher from '../../components/common/LanguageSwitcher'
 import NavBar from '../../components/client/NavBar'
-import { fetchAdminStats, fetchRecentAdminData } from '../../services/adminService'
+import {
+  approveRestaurantSubmission,
+  deleteRestaurantSubmission,
+  fetchAdminStats,
+  fetchRecentAdminData,
+  rejectRestaurantSubmission,
+  suspendRestaurantSubmission,
+} from '../../services/adminService'
+
+const STATUS_STYLES = {
+  pending: 'bg-amber-100 text-amber-700',
+  approved: 'bg-emerald-100 text-emerald-700',
+  rejected: 'bg-rose-100 text-rose-700',
+  suspended: 'bg-slate-200 text-slate-700',
+}
 
 function Dashboard() {
   const { t } = useTranslation()
@@ -21,6 +36,7 @@ function Dashboard() {
   })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [actionLoadingByKey, setActionLoadingByKey] = useState({})
 
   useEffect(() => {
     let isMounted = true
@@ -53,6 +69,59 @@ function Dashboard() {
       isMounted = false
     }
   }, [t])
+
+  const setActionLoading = (restaurantId, action, isLoading) => {
+    const key = `${restaurantId}:${action}`
+
+    setActionLoadingByKey((current) => {
+      if (isLoading) {
+        return { ...current, [key]: true }
+      }
+
+      const nextState = { ...current }
+      delete nextState[key]
+      return nextState
+    })
+  }
+
+  const handleStatusAction = async ({ restaurantId, action, request, successMessage }) => {
+    try {
+      setActionLoading(restaurantId, action, true)
+      const updatedRestaurant = await request()
+
+      if (updatedRestaurant) {
+        setRecentData((current) => ({
+          ...current,
+          restaurants: current.restaurants.map((restaurant) =>
+            restaurant.id === restaurantId ? updatedRestaurant : restaurant
+          ),
+        }))
+      } else {
+        setRecentData((current) => ({
+          ...current,
+          restaurants: current.restaurants.filter((restaurant) => restaurant.id !== restaurantId),
+        }))
+      }
+
+      toast.success(successMessage)
+    } catch (actionError) {
+      console.error(`Error running ${action} action:`, actionError)
+      toast.error(t('Unable to update restaurant status right now.'))
+    } finally {
+      setActionLoading(restaurantId, action, false)
+    }
+  }
+
+  const getActionLabel = (restaurantId, action, idleLabel, loadingLabel) =>
+    actionLoadingByKey[`${restaurantId}:${action}`] ? loadingLabel : idleLabel
+
+  const getRestaurantStatus = (restaurant) =>
+    restaurant.status || (restaurant.verified ? 'approved' : 'pending')
+
+  const isRestaurantBusy = (restaurantId) =>
+    ['approve', 'reject', 'suspend', 'delete'].some(
+      (action) => actionLoadingByKey[`${restaurantId}:${action}`]
+    )
 
   const cards = [
     { label: t('Total Users'), value: stats.userCount, icon: Users, color: 'bg-slate-900 text-white' },
@@ -113,12 +182,113 @@ function Dashboard() {
               <section className="rounded-[2rem] bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
                 <h2 className="text-xl font-semibold text-slate-900">{t('Latest Restaurants')}</h2>
                 <div className="mt-4 space-y-4">
-                  {recentData.restaurants.map((restaurant) => (
-                    <div key={restaurant.id} className="rounded-2xl bg-slate-50 p-4">
-                      <p className="font-semibold text-slate-900">{restaurant.name}</p>
-                      <p className="text-sm text-slate-500">{restaurant.owner_id}</p>
-                    </div>
-                  ))}
+                  {recentData.restaurants.map((restaurant) => {
+                    const currentStatus = getRestaurantStatus(restaurant)
+
+                    return (
+                      <div key={restaurant.id} className="rounded-2xl bg-slate-50 p-4">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="font-semibold text-slate-900">{restaurant.name}</p>
+                            <p className="text-sm text-slate-500">{restaurant.owner_id}</p>
+                          </div>
+                          <span
+                            className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${
+                              STATUS_STYLES[currentStatus] || 'bg-slate-200 text-slate-700'
+                            }`}
+                          >
+                            {currentStatus === 'pending' ? t('Pending') : currentStatus}
+                          </span>
+                        </div>
+
+                        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                          <button
+                            type="button"
+                            disabled={isRestaurantBusy(restaurant.id)}
+                            onClick={() =>
+                              handleStatusAction({
+                                restaurantId: restaurant.id,
+                                action: 'approve',
+                                request: () => approveRestaurantSubmission(restaurant.id),
+                                successMessage: t('Restaurant approved successfully.'),
+                              })
+                            }
+                            className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-70"
+                          >
+                            {getActionLabel(
+                              restaurant.id,
+                              'approve',
+                              t('Approve'),
+                              t('Approving...')
+                            )}
+                          </button>
+                          <button
+                            type="button"
+                            disabled={isRestaurantBusy(restaurant.id)}
+                            onClick={() =>
+                              handleStatusAction({
+                                restaurantId: restaurant.id,
+                                action: 'reject',
+                                request: () => rejectRestaurantSubmission(restaurant.id),
+                                successMessage: t('Restaurant rejected successfully.'),
+                              })
+                            }
+                            className="rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-600 disabled:cursor-not-allowed disabled:opacity-70"
+                          >
+                            {getActionLabel(
+                              restaurant.id,
+                              'reject',
+                              t('Reject'),
+                              t('Rejecting...')
+                            )}
+                          </button>
+                          <button
+                            type="button"
+                            disabled={isRestaurantBusy(restaurant.id)}
+                            onClick={() =>
+                              handleStatusAction({
+                                restaurantId: restaurant.id,
+                                action: 'suspend',
+                                request: () => suspendRestaurantSubmission(restaurant.id),
+                                successMessage: t('Restaurant suspended successfully.'),
+                              })
+                            }
+                            className="rounded-full bg-slate-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+                          >
+                            {getActionLabel(
+                              restaurant.id,
+                              'suspend',
+                              t('Suspend'),
+                              t('Suspending...')
+                            )}
+                          </button>
+                          <button
+                            type="button"
+                            disabled={isRestaurantBusy(restaurant.id)}
+                            onClick={() =>
+                              handleStatusAction({
+                                restaurantId: restaurant.id,
+                                action: 'delete',
+                                request: async () => {
+                                  await deleteRestaurantSubmission(restaurant.id)
+                                  return null
+                                },
+                                successMessage: t('Restaurant deleted successfully.'),
+                              })
+                            }
+                            className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-500 disabled:cursor-not-allowed disabled:opacity-70"
+                          >
+                            {getActionLabel(
+                              restaurant.id,
+                              'delete',
+                              t('Delete'),
+                              t('Deleting...')
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </section>
 

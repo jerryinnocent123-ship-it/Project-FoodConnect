@@ -50,6 +50,8 @@ async function ensureRestaurantForOwner({ userId, full_name, adresse }) {
       name: full_name,
       owner_id: userId,
       zone,
+      status: 'pending',
+      verified: false,
     })
     .select('id')
     .maybeSingle()
