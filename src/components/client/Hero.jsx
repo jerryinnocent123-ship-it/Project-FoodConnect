@@ -5,7 +5,7 @@ function Hero() {
 
 // imaj la konn pa vle moute
 // sil pa moute chanje pa her-bg.jpg or salade.jpg
-  const bg = "/fond.jpg"
+  const bg = "https://shorturl.at/muhsx"
 
   const navigate = useNavigate();
   const { t } = useTranslation();
